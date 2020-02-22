@@ -1,9 +1,9 @@
-package ch.lighthouse.renderer;
+package ch.herzog.lighthouse;
 
 public class LightHouse {
 
     public static void main(String[] args) {
-        System.out.println("HELLO WORLD");
+        System.out.println("Hello World!");
     }
 
 }
