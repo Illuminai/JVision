@@ -24,9 +24,9 @@ public class Raytracer {
                 double u = (double) x / 500;
                 double v = (double) y / 500;
                 Point3d origin = new Point3d(0, 0, 0);
-                Vector3d direction = new Vector3d(-2, -1, -1)
-                        .add(new Vector3d(4, 0, 0).scale(u))
-                        .add(new Vector3d(0, 4, 0).scale(v));
+                Vector3d direction = new Vector3d(2, 1, 1)
+                        .add(new Vector3d(-4, 0, 0).scale(u))
+                        .add(new Vector3d(0, -4, 0).scale(v));
                 Ray ray = new Ray(origin, direction);
 
                 Intersection nearest = null;
@@ -47,4 +47,7 @@ public class Raytracer {
         return screen;
     }
 
+    public Scene getScene() {
+        return scene;
+    }
 }

@@ -53,7 +53,25 @@ public class Sphere extends Shape {
         if (discriminant < 0) {
             return null;
         } else {
-            double time = (-b - Math.sqrt(discriminant)) / 2.0 * a;
+            double time1 = (-b + Math.sqrt(discriminant)) / 2.0 * a;
+            double time2 = (-b - Math.sqrt(discriminant)) / 2.0 * a;
+            double time;
+
+            if(time1 < 0) {
+                if(time2 < 0) {
+                    //Object behind ray
+                    return null;
+                } else {
+                    time = time2;
+                }
+            } else {
+                if(time2 < 0) {
+                    time = time1;
+                } else {
+                    time = Math.min(time1, time2);
+                }
+            }
+
             return new Intersection(ray, this, time);
         }
     }

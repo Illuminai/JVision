@@ -9,6 +9,8 @@ public class Render {
     private final Screen renderOn;
     private final GameCanvas parent;
     private Raytracer tracer;
+    private double time = 0;
+
     public Render(Screen renderOn, GameCanvas parent) {
         this.renderOn = renderOn;
         this.parent = parent;
@@ -16,7 +18,7 @@ public class Render {
     }
 
     private void init() {
-        Sphere sphere = new Sphere(new Point3d(0, 0, 2), 1);
+        Sphere sphere = new Sphere(new Point3d(0, 0, 1), 1);
         Scene scene = new Scene();
         scene.getShapes().add(sphere);
 
@@ -35,8 +37,11 @@ public class Render {
     }
 
     public void tick() {
-        //do nothing
+        tracer.getScene().getShapes().get(0).setPosition(new Point3d(2 * Math.sin(time/20),2 * Math.cos(time/20), 3));
+
+        time++;
     }
+
     public Screen getScreen() {
         return renderOn;
     }

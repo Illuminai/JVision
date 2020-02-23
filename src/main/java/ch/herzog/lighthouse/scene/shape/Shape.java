@@ -23,6 +23,14 @@ public abstract class Shape {
         this.position = position;
     }
 
+    public Point3d getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point3d position) {
+        this.position = position;
+    }
+
     /**
      * Calculates the intersection between the shape and the ray
      *
