@@ -8,6 +8,10 @@ import com.illuminai.vision.backend.render.Ray;
  * An abstract shape
  */
 public abstract class Shape {
+    /**
+     * the color
+     * */
+    private int color;
 
     /**
      * the position
@@ -15,12 +19,14 @@ public abstract class Shape {
     protected Point3d position;
 
     /**
-     * Constructs and initializes a Shape from the specified position.
+     * Constructs and initializes a Shape from the specified position and color.
      *
      * @param position the position
+     * @param color the color
      */
-    public Shape(Point3d position) {
+    public Shape(Point3d position, int color) {
         this.position = position;
+        this.color = color;
     }
 
     /**
@@ -53,4 +59,10 @@ public abstract class Shape {
         return position;
     }
 
+    /**
+     * @return the color
+     */
+    public int getColor() {
+        return color;
+    }
 }
