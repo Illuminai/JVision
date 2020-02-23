@@ -34,6 +34,17 @@ public class Vector3d {
     }
 
     /**
+     * Constructs and initializes a Vector3d from the distance of two points
+     *
+     * @param from the start point
+     * @param to   the end point
+     */
+    public Vector3d(Point3d from, Point3d to) {
+        this(to.getX() - from.getX(), to.getY() - from.getY(), to.getZ() - from.getZ());
+    }
+
+
+    /**
      * Calculates the sum of itself and the second vector
      *
      * @param vector the second vector
@@ -141,6 +152,16 @@ public class Vector3d {
      */
     public void setZ(double z) {
         this.z = z;
+    }
+
+    /**
+     * Returns a string that contains the values of the vector
+     *
+     * @return the String representation
+     */
+    @Override
+    public String toString() {
+        return "(" + x + ", " + y + ", " + z + ")";
     }
 
 }
