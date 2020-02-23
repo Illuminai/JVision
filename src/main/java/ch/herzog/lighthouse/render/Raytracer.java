@@ -1,5 +1,6 @@
 package ch.herzog.lighthouse.render;
 
+import ch.gedik.lighthouse.graphics.Screen;
 import ch.herzog.lighthouse.math.Point3d;
 import ch.herzog.lighthouse.math.Vector3d;
 import ch.herzog.lighthouse.scene.Scene;
@@ -15,9 +16,9 @@ public class Raytracer {
         this.scene = scene;
     }
 
-    public BufferedImage renderScene() {
-        BufferedImage image = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
-
+    public Screen renderScene() {
+        //BufferedImage image = new BufferedImage(500, 500, BufferedImage.TYPE_INT_RGB);
+        Screen screen = new Screen(500,500);
         for (int x = 0; x < 500; x++) {
             for (int y = 0; y < 500; y++) {
                 double u = (double) x / 500;
@@ -37,13 +38,13 @@ public class Raytracer {
                 }
 
                 if (nearest != null) {
-                    image.setRGB(x, y, 0x00ff00);
+                    screen.setPixel(x,y,0x00ff00);
                 } else {
-                    image.setRGB(x, y, 0xff00ff);
+                    screen.setPixel(x, y, 0xff00ff);
                 }
             }
         }
-        return image;
+        return screen;
     }
 
 }

@@ -101,12 +101,5 @@ public class GameClass extends JFrame {
         GameClass game = new GameClass(width, height);
         return game;
     }
-
-    public static void main(String[] args) throws Exception {
-        GameClass game = GameClass.createGame(args, 500, 500);
-        game.initCanvas();
-        game.start();
-    }
-
 }
 
