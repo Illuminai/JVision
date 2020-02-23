@@ -1,9 +1,9 @@
-package com.reflectral.vision.frontend;
+package com.illuminai.vision.frontend;
 
-import com.reflectral.vision.backend.math.Point3d;
-import com.reflectral.vision.backend.render.Raytracer;
-import com.reflectral.vision.backend.scene.Scene;
-import com.reflectral.vision.backend.scene.shape.Sphere;
+import com.illuminai.vision.backend.math.Point3d;
+import com.illuminai.vision.backend.render.Raytracer;
+import com.illuminai.vision.backend.scene.Scene;
+import com.illuminai.vision.backend.scene.shape.Sphere;
 
 public class Render {
     private final Screen renderOn;

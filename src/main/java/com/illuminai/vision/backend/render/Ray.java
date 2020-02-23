@@ -1,7 +1,7 @@
-package com.reflectral.vision.backend.render;
+package com.illuminai.vision.backend.render;
 
-import com.reflectral.vision.backend.math.Point3d;
-import com.reflectral.vision.backend.math.Vector3d;
+import com.illuminai.vision.backend.math.Point3d;
+import com.illuminai.vision.backend.math.Vector3d;
 
 /**
  * A ray

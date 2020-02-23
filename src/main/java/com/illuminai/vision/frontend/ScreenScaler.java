@@ -1,4 +1,4 @@
-package com.reflectral.vision.frontend;
+package com.illuminai.vision.frontend;
 
 
 public class ScreenScaler {

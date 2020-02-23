@@ -1,4 +1,4 @@
-package com.reflectral.vision.frontend;
+package com.illuminai.vision.frontend;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

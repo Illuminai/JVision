@@ -1,9 +1,9 @@
-package com.reflectral.vision.backend.scene.shape;
+package com.illuminai.vision.backend.scene.shape;
 
-import com.reflectral.vision.backend.math.Point3d;
-import com.reflectral.vision.backend.math.Vector3d;
-import com.reflectral.vision.backend.render.Intersection;
-import com.reflectral.vision.backend.render.Ray;
+import com.illuminai.vision.backend.math.Point3d;
+import com.illuminai.vision.backend.math.Vector3d;
+import com.illuminai.vision.backend.render.Intersection;
+import com.illuminai.vision.backend.render.Ray;
 
 /**
  * A sphere

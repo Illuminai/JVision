@@ -1,7 +1,7 @@
-# LightHouse
+# Vision
 
 ### About
-LightHouse is a Java ray tracer
+Vision is a physically based renderer built with Java.
 
 ### Contributors
 
@@ -31,4 +31,4 @@ LightHouse is a Java ray tracer
 </table>
 
 ### License
-LightHouse is licensed under the MIT license.
+Vision is licensed under the MIT license.

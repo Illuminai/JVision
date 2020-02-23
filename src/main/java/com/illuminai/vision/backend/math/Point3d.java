@@ -1,4 +1,4 @@
-package com.reflectral.vision.backend.math;
+package com.illuminai.vision.backend.math;
 
 /**
  * A 3 dimensional point
