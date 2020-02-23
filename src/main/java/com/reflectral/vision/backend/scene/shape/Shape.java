@@ -1,8 +1,8 @@
-package ch.herzog.lighthouse.scene.shape;
+package com.reflectral.vision.backend.scene.shape;
 
-import ch.herzog.lighthouse.math.Point3d;
-import ch.herzog.lighthouse.render.Intersection;
-import ch.herzog.lighthouse.render.Ray;
+import com.reflectral.vision.backend.math.Point3d;
+import com.reflectral.vision.backend.render.Intersection;
+import com.reflectral.vision.backend.render.Ray;
 
 /**
  * An abstract shape
@@ -23,14 +23,6 @@ public abstract class Shape {
         this.position = position;
     }
 
-    public Point3d getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point3d position) {
-        this.position = position;
-    }
-
     /**
      * Calculates the intersection between the shape and the ray
      *
@@ -46,5 +38,19 @@ public abstract class Shape {
      * @return true if the shape contains the point
      */
     public abstract boolean contains(Point3d point);
+
+    /**
+     * @param position the position
+     */
+    public void setPosition(Point3d position) {
+        this.position = position;
+    }
+
+    /**
+     * @return the position
+     */
+    public Point3d getPosition() {
+        return position;
+    }
 
 }

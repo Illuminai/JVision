@@ -5,8 +5,8 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ch.herzog</groupId>
-    <artifactId>LightHouse</artifactId>
+    <groupId>ch.reflectral</groupId>
+    <artifactId>Vision</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

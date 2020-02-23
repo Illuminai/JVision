@@ -1,9 +1,9 @@
-package ch.gedik.lighthouse.graphics;
+package com.reflectral.vision.frontend;
 
-import ch.herzog.lighthouse.math.Point3d;
-import ch.herzog.lighthouse.render.Raytracer;
-import ch.herzog.lighthouse.scene.Scene;
-import ch.herzog.lighthouse.scene.shape.Sphere;
+import com.reflectral.vision.backend.math.Point3d;
+import com.reflectral.vision.backend.render.Raytracer;
+import com.reflectral.vision.backend.scene.Scene;
+import com.reflectral.vision.backend.scene.shape.Sphere;
 
 public class Render {
     private final Screen renderOn;

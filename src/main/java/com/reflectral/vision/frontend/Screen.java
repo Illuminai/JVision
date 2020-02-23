@@ -1,13 +1,12 @@
-package ch.gedik.lighthouse.graphics;
+package com.reflectral.vision.frontend;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Function;
-
-import javax.imageio.ImageIO;
 
 /** This class represents an Image. The dimensions (width and height) are are final, but the pixels themselves are not. <br>
  * There is no representation of alpha, just RGB. If the value of -1 is assigned to a pixel, it is ignored as it is interpreted as transparent.

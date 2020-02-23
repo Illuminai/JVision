@@ -1,13 +1,12 @@
-package ch.gedik.lighthouse.graphics;
-import java.awt.Dimension;
-import java.awt.HeadlessException;
+package com.reflectral.vision.frontend;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.PrintStream;
-
-import javax.swing.JFrame;
 
 public class GameClass extends JFrame {
     private static final long serialVersionUID = -624471870025862738L;

@@ -1,7 +1,6 @@
-package ch.gedik.lighthouse.graphics;
+package com.reflectral.vision.frontend;
 
-import java.awt.Canvas;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;

@@ -1,6 +1,6 @@
-package ch.herzog.lighthouse.scene;
+package com.reflectral.vision.backend.scene;
 
-import ch.herzog.lighthouse.scene.shape.Shape;
+import com.reflectral.vision.backend.scene.shape.Shape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,4 +16,5 @@ public class Scene {
     public List<Shape> getShapes() {
         return shapes;
     }
+
 }

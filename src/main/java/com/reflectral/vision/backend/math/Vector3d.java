@@ -1,4 +1,4 @@
-package ch.herzog.lighthouse.math;
+package com.reflectral.vision.backend.math;
 
 /**
  * A 3 dimensional vector

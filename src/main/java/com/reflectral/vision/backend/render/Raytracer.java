@@ -1,12 +1,10 @@
-package ch.herzog.lighthouse.render;
+package com.reflectral.vision.backend.render;
 
-import ch.gedik.lighthouse.graphics.Screen;
-import ch.herzog.lighthouse.math.Point3d;
-import ch.herzog.lighthouse.math.Vector3d;
-import ch.herzog.lighthouse.scene.Scene;
-import ch.herzog.lighthouse.scene.shape.Shape;
-
-import java.awt.image.BufferedImage;
+import com.reflectral.vision.backend.math.Point3d;
+import com.reflectral.vision.backend.math.Vector3d;
+import com.reflectral.vision.backend.scene.Scene;
+import com.reflectral.vision.backend.scene.shape.Shape;
+import com.reflectral.vision.frontend.Screen;
 
 public class Raytracer {
 
@@ -50,4 +48,5 @@ public class Raytracer {
     public Scene getScene() {
         return scene;
     }
+
 }

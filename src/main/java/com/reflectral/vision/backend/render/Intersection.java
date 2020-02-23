@@ -1,7 +1,7 @@
-package ch.herzog.lighthouse.render;
+package com.reflectral.vision.backend.render;
 
-import ch.herzog.lighthouse.math.Point3d;
-import ch.herzog.lighthouse.scene.shape.Shape;
+import com.reflectral.vision.backend.math.Point3d;
+import com.reflectral.vision.backend.scene.shape.Shape;
 
 /**
  * An intersection

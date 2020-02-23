@@ -1,9 +1,9 @@
-package ch.herzog.lighthouse.scene.shape;
+package com.reflectral.vision.backend.scene.shape;
 
-import ch.herzog.lighthouse.math.Point3d;
-import ch.herzog.lighthouse.math.Vector3d;
-import ch.herzog.lighthouse.render.Intersection;
-import ch.herzog.lighthouse.render.Ray;
+import com.reflectral.vision.backend.math.Point3d;
+import com.reflectral.vision.backend.math.Vector3d;
+import com.reflectral.vision.backend.render.Intersection;
+import com.reflectral.vision.backend.render.Ray;
 
 /**
  * A sphere

@@ -1,4 +1,4 @@
-package ch.gedik.lighthouse.graphics;
+package com.reflectral.vision.frontend;
 
 
 public class ScreenScaler {
