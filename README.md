@@ -1,5 +1,9 @@
 # LightHouse
-Raytracing in Java
+
+### About
+LightHouse is a Java ray tracer
+
+### Contributors
 
 <table>
   <tr>
@@ -25,3 +29,6 @@ Raytracing in Java
   </td>
   </tr>
 </table>
+
+### License
+LightHouse is licensed under the MIT license.
