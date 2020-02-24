@@ -10,8 +10,11 @@ public class Raytracer {
 
     private Scene scene;
 
+    private Point3d position;
+
     public Raytracer(Scene scene) {
         this.scene = scene;
+        position = new Point3d(0,0,0);
     }
 
     public Screen renderScene() {
@@ -20,8 +23,8 @@ public class Raytracer {
             for (int y = 0; y < 500; y++) {
                 double u = (x - 250) / 500.0;
                 double v = (y - 250) / 500.0;
-                Point3d origin = new Point3d(0, 0, 0);
-                Vector3d direction = new Vector3d(.5,0,0)
+                Point3d origin = new Point3d(position.getX(),position.getY(),position.getZ());
+                Vector3d direction = new Vector3d(10,0,0)
                         .add(new Vector3d(0,0,4).scale(u))
                         .add(new Vector3d(0,-4,0).scale(v));
 
@@ -49,4 +52,11 @@ public class Raytracer {
         return scene;
     }
 
+    public Point3d getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point3d position) {
+        this.position = position;
+    }
 }

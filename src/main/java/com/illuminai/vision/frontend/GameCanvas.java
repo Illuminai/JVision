@@ -1,5 +1,8 @@
 package com.illuminai.vision.frontend;
 
+import com.illuminai.vision.frontend.listener.EventExecuter;
+import com.illuminai.vision.frontend.listener.GameListener;
+
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -20,10 +23,17 @@ public class GameCanvas extends Canvas {
     public static final int MAX_TICKS_PER_SECOND = 50;
     private Render render;
     private BufferedImage errorImage;
+    private GameListener listener;
 
     public GameCanvas() {
         this.errorImage = new BufferedImage(20,50,BufferedImage.TYPE_INT_RGB);
         errorImage.getGraphics().drawString("Error",0,25);
+
+        listener = new GameListener(this);
+        addKeyListener(listener);
+        addMouseListener(listener);
+        addMouseMotionListener(listener);
+
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -142,11 +152,16 @@ public class GameCanvas extends Canvas {
 
         private void executeTick() {
             if (System.currentTimeMillis() - lastTimeTicked > 1000 / MAX_TICKS_PER_SECOND) {
+                listener.flushEvents();
                 render.tick();
                 lastTimeTicked = System.currentTimeMillis();
                 ticks++;
             }
         }
+    }
+
+    public GameListener getListener() {
+        return listener;
     }
 
     public int getOriginalWidth() {

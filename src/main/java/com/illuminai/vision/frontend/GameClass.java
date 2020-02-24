@@ -20,6 +20,7 @@ public class GameClass extends JFrame {
         super("PrimitiveGame " + VERSION_NAME + " (" + VERSION + ")");
         System.out.println("Starting on version: " + VERSION_NAME + " (" + VERSION + ")");
         initFrame(width, height);
+        addFocusListener(canvas.getListener());
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
