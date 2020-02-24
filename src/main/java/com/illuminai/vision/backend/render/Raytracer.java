@@ -18,6 +18,7 @@ public class Raytracer {
     }
 
     public Screen renderScene() {
+        //TODO y-axis is rendered as height; the z-axis should be the height, as it makes it easier when doing math-stuff
         Screen screen = new Screen(500,500);
         for (int x = 0; x < 500; x++) {
             for (int y = 0; y < 500; y++) {
