@@ -1,7 +1,7 @@
 package com.illuminai.vision.backend.scene.shape;
 
 import com.illuminai.vision.backend.math.Point3d;
-import com.illuminai.vision.backend.math.Vector;
+import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.render.Intersection;
 import com.illuminai.vision.backend.render.Ray;
 
@@ -84,7 +84,7 @@ public class Sphere extends Shape {
      */
     @Override
     public boolean contains(Point3d point) {
-        return new Vector(position, point).length() < radius;
+        return new Vector3d(position, point).length() < radius;
     }
 
     /**

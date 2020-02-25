@@ -39,7 +39,7 @@ public class Point3d {
      * @param vector the second vector
      * @return the sum of itself and the second vector
      */
-    public Point3d add(Vector vector) {
+    public Point3d add(Vector3d vector) {
         return new Point3d(x + vector.getX(), y + vector.getY(), z + vector.getZ());
     }
 
@@ -49,7 +49,7 @@ public class Point3d {
      * @param vector the second vector
      * @return the difference of itself and the second vector
      */
-    public Point3d subtract(Vector vector) {
+    public Point3d subtract(Vector3d vector) {
         return new Point3d(x - vector.getX(), y - vector.getY(), z - vector.getZ());
     }
 
@@ -58,8 +58,8 @@ public class Point3d {
      *
      * @return the vector with the xyz coordinates of itself
      */
-    public Vector toVector() {
-        return new Vector(x, y, z);
+    public Vector3d toVector() {
+        return new Vector3d(x, y, z);
     }
 
     /**
