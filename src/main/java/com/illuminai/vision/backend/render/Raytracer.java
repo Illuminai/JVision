@@ -1,7 +1,7 @@
 package com.illuminai.vision.backend.render;
 
 import com.illuminai.vision.backend.math.Point3d;
-import com.illuminai.vision.backend.math.Vector3d;
+import com.illuminai.vision.backend.math.Vector;
 import com.illuminai.vision.backend.scene.Scene;
 import com.illuminai.vision.backend.scene.shape.Shape;
 import com.illuminai.vision.frontend.Screen;
@@ -25,9 +25,9 @@ public class Raytracer {
                 double u = (x - 250) / 500.0;
                 double v = (y - 250) / 500.0;
                 Point3d origin = new Point3d(position.getX(),position.getY(),position.getZ());
-                Vector3d direction = new Vector3d(10,0,0)
-                        .add(new Vector3d(0,0,4).scale(u))
-                        .add(new Vector3d(0,-4,0).scale(v));
+                Vector direction = new Vector(10,0,0)
+                        .add(new Vector(0,0,4).scale(u))
+                        .add(new Vector(0,-4,0).scale(v));
 
                 Ray ray = new Ray(origin, direction);
 

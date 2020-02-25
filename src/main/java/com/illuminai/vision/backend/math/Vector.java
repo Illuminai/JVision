@@ -1,24 +1,21 @@
 package com.illuminai.vision.backend.math;
 
+import java.util.Arrays;
+
 /**
  * A 3 dimensional vector
  */
-public class Vector3d {
+public class Vector {
 
-    /**
-     * the x coordinate
-     */
-    private double x;
+    private final double[] content;
 
-    /**
-     * the y coordinate
-     */
-    private double y;
+    public Vector(int size) {
+        this.content = new double[3];
+    }
 
-    /**
-     * the z coordinate
-     */
-    private double z;
+    public Vector(Vector o) {
+        this.content = o.content.clone();
+    }
 
     /**
      * Constructs and initializes a Vector3d from the specified xyz coordinates.
@@ -27,10 +24,11 @@ public class Vector3d {
      * @param y the y coordinate
      * @param z the z coordinate
      */
-    public Vector3d(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public Vector(double x, double y, double z) {
+        this(3);
+        setX(x);
+        setY(y);
+        setZ(z);
     }
 
     /**
@@ -39,7 +37,7 @@ public class Vector3d {
      * @param from the start point
      * @param to   the end point
      */
-    public Vector3d(Point3d from, Point3d to) {
+    public Vector(Point3d from, Point3d to) {
         this(to.getX() - from.getX(), to.getY() - from.getY(), to.getZ() - from.getZ());
     }
 
@@ -50,8 +48,12 @@ public class Vector3d {
      * @param vector the second vector
      * @return the sum of itself and the second vector
      */
-    public Vector3d add(Vector3d vector) {
-        return new Vector3d(x + vector.x, y + vector.y, z + vector.z);
+    public Vector add(Vector vector) {
+        Vector v = new Vector(this);
+        for(int i = 0; i < this.content.length; i++) {
+            v.content[i] += vector.content[i];
+        }
+        return v;
     }
 
     /**
@@ -60,8 +62,12 @@ public class Vector3d {
      * @param vector the second vector
      * @return the difference of itself and the second vector
      */
-    public Vector3d subtract(Vector3d vector) {
-        return new Vector3d(x - vector.x, y - vector.y, z - vector.z);
+    public Vector subtract(Vector vector) {
+        Vector v = new Vector(this);
+        for(int i = 0; i < this.content.length; i++) {
+            v.content[i] -= vector.content[i];
+        }
+        return v;
     }
 
     /**
@@ -70,8 +76,12 @@ public class Vector3d {
      * @param scalar the scalar value
      * @return the scaled vector
      */
-    public Vector3d scale(double scalar) {
-        return new Vector3d(x * scalar, y * scalar, z * scalar);
+    public Vector scale(double scalar) {
+        Vector t = new Vector(this);
+        for(int i= 0; i < this.content.length; i++) {
+            t.content[i] *= scalar;
+        }
+        return t;
     }
 
     /**
@@ -80,8 +90,12 @@ public class Vector3d {
      * @param vector the second vector
      * @return the dot product
      */
-    public double dot(Vector3d vector) {
-        return (x * vector.x) + (y * vector.y) + (z * vector.z);
+    public double dot(Vector vector) {
+        double d =0;
+        for(int i = 0; i < content.length; i++) {
+            d += vector.content[i] *  this.content[i];
+        }
+        return d;
     }
 
     /**
@@ -90,8 +104,8 @@ public class Vector3d {
      * @param vector the second vector
      * @return the cross product
      */
-    public Vector3d cross(Vector3d vector) {
-        return new Vector3d(y * vector.z - z * vector.y, z * vector.x - x * vector.z, x * vector.y - y * vector.x);
+    public Vector cross(Vector vector) {
+        return new Vector(getY() * vector.getZ() - getZ() * vector.getY(), getZ() * vector.getX() - getX() * vector.getZ(), getX() * vector.getY() - getY() * vector.getX());
     }
 
     /**
@@ -100,7 +114,11 @@ public class Vector3d {
      * @return the length
      */
     public double length() {
-        return Math.sqrt(x * x + y * y + z * z);
+        double d = 0;
+        for(double f: content) {
+            d += f * f;
+        }
+        return Math.sqrt(d);
     }
 
     /**
@@ -108,7 +126,7 @@ public class Vector3d {
      *
      * @return the normalized vector
      */
-    public Vector3d normalize() {
+    public Vector normalize() {
         return scale(1 / length());
     }
 
@@ -116,42 +134,42 @@ public class Vector3d {
      * @return the x coordinate
      */
     public double getX() {
-        return x;
+        return content[0];
     }
 
     /**
      * @param x the x coordinate
      */
     public void setX(double x) {
-        this.x = x;
+        this.content[0] = x;
     }
 
     /**
      * @return the y coordinate
      */
     public double getY() {
-        return y;
+        return content[1];
     }
 
     /**
      * @param y the y coordinate
      */
     public void setY(double y) {
-        this.y = y;
+        this.content[1] = y;
     }
 
     /**
      * @return the z coordinate
      */
     public double getZ() {
-        return z;
+        return content[2];
     }
 
     /**
      * @param z the z coordinate
      */
     public void setZ(double z) {
-        this.z = z;
+        this.content[2] = z;
     }
 
     /**
@@ -161,7 +179,7 @@ public class Vector3d {
      */
     @Override
     public String toString() {
-        return "(" + x + ", " + y + ", " + z + ")";
+        return Arrays.toString(this.content);
     }
 
 }
