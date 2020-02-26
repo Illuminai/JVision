@@ -8,10 +8,11 @@ import com.illuminai.vision.backend.render.Ray;
  * An abstract shape
  */
 public abstract class Shape {
+
     /**
      * the color
-     * */
-    private int color;
+     */
+    protected int color;
 
     /**
      * the position

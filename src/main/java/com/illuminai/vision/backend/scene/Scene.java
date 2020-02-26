@@ -1,6 +1,7 @@
 package com.illuminai.vision.backend.scene;
 
 import com.illuminai.vision.backend.math.Point3d;
+import com.illuminai.vision.backend.scene.light.Light;
 import com.illuminai.vision.backend.scene.shape.Shape;
 import com.illuminai.vision.backend.scene.shape.Sphere;
 
@@ -11,17 +12,23 @@ import java.util.List;
  * A scene
  */
 public class Scene {
-    private double time = 0;
+
     /**
      * the shapes
      */
     private List<Shape> shapes;
 
     /**
+     * the lights
+     */
+    private List<Light> lights;
+
+    /**
      * Constructs and initializes a Scene.
      */
     public Scene() {
         shapes = new ArrayList<>();
+        lights = new ArrayList<>();
     }
 
     /**
@@ -31,10 +38,20 @@ public class Scene {
         return shapes;
     }
 
+    /**
+     * @return the lights
+     */
+    public List<Light> getLights() {
+        return lights;
+    }
+
+    //TODO: Remove hard coded stuff
+
+    private double time = 0;
 
     public void tick() {
-        green.setPosition(new Point3d(2 * Math.sin(time/20),2 * Math.cos(time/20), 3));
-        white.setPosition(new Point3d(3,Math.sin(time/20),Math.cos(time/20)));
+        green.setPosition(new Point3d(2 * Math.sin(time / 20), 2 * Math.cos(time / 20), 3));
+        white.setPosition(new Point3d(3, Math.sin(time / 20), Math.cos(time / 20)));
         time++;
     }
 
@@ -47,9 +64,8 @@ public class Scene {
         white = new Sphere(new Point3d(3, 0, 0), .5,0xffffff);
         getShapes().add(white);
 
-
         getShapes().add(new Sphere(new Point3d(3, 0, 0), .5,0));
         getShapes().add(new Sphere(new Point3d(3, -1, -1), .5,0xff));
-
     }
+
 }

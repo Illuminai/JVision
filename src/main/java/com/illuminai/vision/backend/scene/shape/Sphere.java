@@ -21,7 +21,7 @@ public class Sphere extends Shape {
      * @param position the position
      */
     public Sphere(Point3d position) {
-        this(position, 1.0,0xffffff);
+        this(position, 1.0, 0xffffff);
     }
 
     /**
@@ -55,24 +55,18 @@ public class Sphere extends Shape {
         } else {
             double time1 = (-b + Math.sqrt(discriminant)) / 2.0 * a;
             double time2 = (-b - Math.sqrt(discriminant)) / 2.0 * a;
-            double time;
 
-            if(time1 < 0) {
-                if(time2 < 0) {
-                    //Object behind ray
-                    return null;
-                } else {
-                    time = time2;
-                }
+            double time;
+            if (time1 < 0 && time2 < 0) {
+                return null;
+            } else if (time1 < 0 || time2 < 0) {
+                time = Math.max(time1, time2);
             } else {
-                if(time2 < 0) {
-                    time = time1;
-                } else {
-                    time = Math.min(time1, time2);
-                }
+                time = Math.min(time1, time2);
             }
 
-            return new Intersection(ray, this, time);
+            Vector3d normal = new Vector3d(position, ray.getPointOnRay(time));
+            return new Intersection(ray, this, normal, time);
         }
     }
 
