@@ -103,4 +103,20 @@ public class Point3d {
     public void setZ(double z) {
         this.z = z;
     }
+
+    /** Copies the values of {@code p} into this instance*/
+    public void set(Point3d p) {
+        setX(p.getX());
+        setY(p.getY());
+        setZ(p.getZ());
+    }
+
+    @Override
+    public String toString() {
+        return "Point3d{" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '}';
+    }
 }

@@ -112,11 +112,14 @@ public class Vector {
     }
 
     /**
-     * Calculates the normalized vector
+     * Calculates the normalized vector. If the length of the vector is zero, a vector filled with 0 is returned
      *
      * @return the normalized vector
      */
     public Vector normalize() {
+        if(this.length() == 0) {
+            return new Vector(this);
+        }
         return scale(1 / length());
     }
 

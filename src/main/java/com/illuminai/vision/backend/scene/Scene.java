@@ -31,25 +31,43 @@ public class Scene {
         return shapes;
     }
 
-
     public void tick() {
-        green.setPosition(new Point3d(2 * Math.sin(time/20),2 * Math.cos(time/20), 3));
-        white.setPosition(new Point3d(3,Math.sin(time/20),Math.cos(time/20)));
+        red.setPosition(new Point3d(0,Math.sin(time/20), Math.cos(time/20)));
+        green.setPosition(new Point3d(Math.cos(time/20),0, Math.sin(time/20)));
+        blue.setPosition(new Point3d(Math.sin(time/20), Math.cos(time/20), 0));
         time++;
     }
 
-    Sphere green;
-    Sphere white;
+    Sphere red, green, blue;
 
     public void sceneInit() {
-        green = new Sphere(new Point3d(0, 0, 1), 1,0x00ff00);
+        for(int x = -5; x < 6; x++) {
+            if(x == 5)
+                getShapes().add(new Sphere(new Point3d(x/10.0,0,0),.05,0x0));
+            else
+            getShapes().add(new Sphere(new Point3d(x/10.0,0,0),.05,0xff0000));
+
+        }
+
+        for(int y = -5; y < 6; y++) {
+            if(y == 5)
+                getShapes().add(new Sphere(new Point3d(0,y/10.0,0),.05,0));
+            else
+            getShapes().add(new Sphere(new Point3d(0,y/10.0,0),.05,0x00ff00));
+        }
+        for(int z = -5; z < 6; z++) {
+            if(z == 5)
+                getShapes().add(new Sphere(new Point3d(0,0,z/10.0),.05,0));
+            else
+            getShapes().add(new Sphere(new Point3d(0,0,z/10.0),.05,0x0000ff));
+        }
+        red = new Sphere(new Point3d(0, 0, 1), .1,0xff0000);
+        getShapes().add(red);
+
+        green = new Sphere(new Point3d(1, 0, 0), .1,0x00ff00);
         getShapes().add(green);
-        white = new Sphere(new Point3d(3, 0, 0), .5,0xffffff);
-        getShapes().add(white);
 
-
-        getShapes().add(new Sphere(new Point3d(3, 0, 0), .5,0));
-        getShapes().add(new Sphere(new Point3d(3, -1, -1), .5,0xff));
-
+        blue = new Sphere(new Point3d(0,1,0),.1,0x0000ff);
+        getShapes().add(blue);
     }
 }

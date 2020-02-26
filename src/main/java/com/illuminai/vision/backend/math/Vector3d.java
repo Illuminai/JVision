@@ -108,11 +108,14 @@ public class Vector3d {
     }
 
     /**
-     * Calculates the normalized vector
+     * Calculates the normalized vector. If the length of the vector is zero, a vector filled with 0 is returned
      *
      * @return the normalized vector
      */
     public Vector3d normalize() {
+        if(this.length() == 0) {
+            return new Vector3d(this);
+        }
         return scale(1 / length());
     }
 

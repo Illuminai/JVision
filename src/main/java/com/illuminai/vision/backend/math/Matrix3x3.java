@@ -20,13 +20,36 @@ public class Matrix3x3 {
                 this.get(0,1) * other.getX() + this.get(1,1) * other.getY() + this.get(2,1) * other.getZ(),
                 this.get(0,2) * other.getX() + this.get(1,2) * other.getY() + this.get(2,2) * other.getZ());
     }
-    
+
+
+    public Matrix3x3 multiple(Matrix3x3 o) {
+        //DO NOT QUESTION THE CODE!!!
+        return new Matrix3x3(new double[]{
+                this.get(0,0)* o.get(0,0) + this.get(0,1)* o.get(1,0) + this.get(0,2)* o.get(2,0),
+                this.get(0,0) * o.get(0,1) + this.get(0,1) * o.get(1,1) + this.get(0,2) * o.get(2,1),
+                this.get(0,0) * o.get(0,2) + this.get(0,1) * o.get(1,2) + this.get(0,2) * o.get(2,2),
+
+                this.get(1,0)* o.get(0,0) + this.get(1,1)* o.get(1,0) + this.get(1,2)* o.get(2,0),
+                this.get(1,0) * o.get(0,1) + this.get(1,1) * o.get(1,1) + this.get(1,2) * o.get(2,1),
+                this.get(1,0) * o.get(0,2) + this.get(1,1) * o.get(1,2) + this.get(1,2) * o.get(2,2),
+
+                this.get(2,0)* o.get(0,0) + this.get(2,1)* o.get(1,0) + this.get(2,2)* o.get(2,0),
+                this.get(2,0) * o.get(0,1) + this.get(2,1) * o.get(1,1) + this.get(2,2) * o.get(2,1),
+                this.get(2,0) * o.get(0,2) + this.get(2,1) * o.get(1,2) + this.get(2,2) * o.get(2,2)
+
+        });
+    }
+
+    /** Creates a rotation matrix, which will be able to rotate a {@link Vector3d} on the axis specified by {@code axis} and by
+     * {@code angle} radians
+     * @param axis may be 'x','y' or 'z'. Other characters throw exceptions
+     * @param angle the angle of rotation in radians*/
     public static Matrix3x3 createRotationMatrix(char axis, double angle) {
         switch (axis) {
             case 'x':
                 return new Matrix3x3(new double[] {
                     1,0,0,
-                    0,Math.cos(angle),-Math.cos(angle),
+                    0,Math.cos(angle),-Math.sin(angle),
                     0, Math.sin(angle),Math.cos(angle) });
             case 'y':
                 return new Matrix3x3(new double[] {
@@ -44,7 +67,15 @@ public class Matrix3x3 {
                 throw new RuntimeException("Invalid axis");
         }
     }
-    
+
+    public static Matrix3x3 multiply(Matrix3x3 one, Matrix3x3 two) {
+        return one.multiple(two);
+    }
+
+    public static Matrix3x3 createRotationMatrix(double x, double y, double z) {
+        return multiply(multiply(createRotationMatrix('x',x), createRotationMatrix('y',y)),createRotationMatrix('z', z));
+    }
+
     /** Only for debug */
     public void print() {
         for(int row = 0; row < 3; row ++) {

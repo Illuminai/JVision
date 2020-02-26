@@ -203,12 +203,9 @@ public class Screen {
         return this;
     }
 
-    /* TODO add ScreenScaler class
     public Screen getScaledScreen(int width, int height) {
         return new ScreenScaler(this, width, height).scaledInstance();
     }
-    */
-
 
     /** Converts a buffered image to a screen
      * @param image the image to convert
@@ -223,7 +220,7 @@ public class Screen {
                 if (alpha == 0) {
                     rgb = -1;
                 } else {
-                    // Remove alpha
+                    // Remove alpha: TODO
                     rgb = rgb & (0xFFFFFF | -1);
                 }
 
@@ -318,8 +315,8 @@ public class Screen {
         dy = yEnd - yStart;
 
         /* Vorzeichen des Inkrements bestimmen */
-        incx = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
-        incy = (dy > 0) ? 1 : (dy < 0) ? -1 : 0;
+        incx = Integer.compare(dx,0);
+        incy = Integer.compare(dy,0);
         if (dx < 0)
             dx = -dx;
         if (dy < 0)
@@ -444,8 +441,8 @@ public class Screen {
         dy = yend - ystart;
 
         /* Vorzeichen des Inkrements bestimmen */
-        incx = (dx > 0) ? 1 : (dx < 0) ? -1 : 0;
-        incy = (dy > 0) ? 1 : (dy < 0) ? -1 : 0;
+        incx = Integer.compare(dx,0);
+        incy = Integer.compare(dy,0);
         if (dx < 0)
             dx = -dx;
         if (dy < 0)
@@ -506,7 +503,7 @@ public class Screen {
 
             c[0] = (rgb >> 16) & 0xFF;
             c[1] = (rgb >> 8) & 0xFF;
-            c[2] = (rgb >> 0) & 0xFF;
+            c[2] = (rgb) & 0xFF;
 
             for (int x = 0; x < c.length; x++) {
                 c[x] = (int) (c[x] * factor);
@@ -515,7 +512,7 @@ public class Screen {
                 }
             }
 
-            rgb = ((c[0] & 0xFF) << 16) | ((c[1] & 0xFF) << 8) | ((c[2] & 0xFF) << 0);
+            rgb = ((c[0] & 0xFF) << 16) | ((c[1] & 0xFF) << 8) | ((c[2] & 0xFF));
             getPixels()[i] = rgb;
         }
         return this;
@@ -536,7 +533,7 @@ public class Screen {
 
             c[0] = (rgb >> 16) & 0xFF;
             c[1] = (rgb >> 8) & 0xFF;
-            c[2] = (rgb >> 0) & 0xFF;
+            c[2] = (rgb) & 0xFF;
 
             for (int x = 0; x < c.length; x++) {
                 c[x] = c[x] + num;
@@ -547,7 +544,7 @@ public class Screen {
                 }
             }
 
-            rgb = ((c[0] & 0xFF) << 16) | ((c[1] & 0xFF) << 8) | ((c[2] & 0xFF) << 0);
+            rgb = ((c[0] & 0xFF) << 16) | ((c[1] & 0xFF) << 8) | ((c[2] & 0xFF));
             setPixel(i, rgb);
         }
         return this;
@@ -585,11 +582,11 @@ public class Screen {
     }
 
     private int y(int x, int a, int b) {
-        return (int) Math.sqrt(b * b - (b * b * x * x) / (a * a));
+        return (int) Math.sqrt(b * b - (1.0 * b * b * x * x) / (a * a));
     }
 
     private int x(int y, int a, int b) {
-        return (int) Math.sqrt((a * a * (b * b - y * y)) / (b * b));
+        return (int) Math.sqrt((a * a * (1.0 * b * b - y * y)) / (b * b));
     }
 
     public Screen fillOval(int xStart, int yStart, int width, int height, int color) {
@@ -629,7 +626,7 @@ public class Screen {
     }
 
     public static int getBlue(int p) {
-        return (p >> 0) & 0xFF;
+        return p & 0xFF;
     }
 
     public static int getColor(int r, int g, int b) {
@@ -652,6 +649,6 @@ public class Screen {
             b = 0;
         }
 
-        return ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF) << 0);
+        return ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF));
     }
 }

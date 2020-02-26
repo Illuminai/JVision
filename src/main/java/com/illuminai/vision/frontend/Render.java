@@ -26,24 +26,49 @@ public class Render {
     }
 
     public void render() {
-        //TODO render here your image
         renderOn.drawScreen(0,0, tracer.renderScene());
     }
 
     public void tick() {
         GameListener l = parent.getListener();
-        Point3d p = tracer.getPosition();
+        Point3d location = tracer.getPosition();
+        Point3d rotation = tracer.getRotation();
         if(l.isKeyDown(KeyEvent.VK_W)) {
-            p.setX(p.getX() + .1);
+            tracer.moveForward(.1);
         }
         if(l.isKeyDown(KeyEvent.VK_S)) {
-            p.setX(p.getX() - .1);
+            tracer.moveForward(-.1);
         }
         if(l.isKeyDown(KeyEvent.VK_D)) {
-            p.setZ(p.getZ() + .1);
+            tracer.moveSideward(-.1);
         }
         if(l.isKeyDown(KeyEvent.VK_A)) {
-            p.setZ(p.getZ() - .1);
+            tracer.moveSideward(.1);
+        }
+        if(l.isKeyDown(KeyEvent.VK_SPACE)) {
+            tracer.moveUpwards(.1);
+        }
+        if(l.isKeyDown(KeyEvent.VK_SHIFT)) {
+            tracer.moveUpwards(-.1);
+        }
+
+        if(l.isKeyDown(KeyEvent.VK_L)) {
+            rotation.setZ(rotation.getZ() - .05);
+        }
+        if(l.isKeyDown(KeyEvent.VK_J)) {
+            rotation.setZ(rotation.getZ() + .05);
+        }
+        if(l.isKeyDown(KeyEvent.VK_I)) {
+            rotation.setY(rotation.getY() + .05);
+        }
+        if(l.isKeyDown(KeyEvent.VK_K)) {
+            rotation.setY(rotation.getY() - .05);
+        }
+        if(l.isKeyDown(KeyEvent.VK_U)) {
+            rotation.setX(rotation.getX() - .05);
+        }
+        if(l.isKeyDown(KeyEvent.VK_O)) {
+            rotation.setX(rotation.getX() + .05);
         }
         tracer.getScene().tick();
     }
