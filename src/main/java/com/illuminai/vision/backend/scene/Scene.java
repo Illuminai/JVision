@@ -1,6 +1,7 @@
 package com.illuminai.vision.backend.scene;
 
 import com.illuminai.vision.backend.math.Point3d;
+import com.illuminai.vision.backend.scene.light.Light;
 import com.illuminai.vision.backend.scene.shape.Shape;
 import com.illuminai.vision.backend.scene.shape.Sphere;
 
@@ -18,10 +19,16 @@ public class Scene {
     private List<Shape> shapes;
 
     /**
+     * the lights
+     */
+    private List<Light> lights;
+
+    /**
      * Constructs and initializes a Scene.
      */
     public Scene() {
         shapes = new ArrayList<>();
+        lights = new ArrayList<>();
     }
 
     /**
@@ -30,6 +37,17 @@ public class Scene {
     public List<Shape> getShapes() {
         return shapes;
     }
+
+    /**
+     * @return the lights
+     */
+    public List<Light> getLights() {
+        return lights;
+    }
+
+    //TODO: Remove hard coded stuff
+
+    private double time = 0;
 
     public void tick() {
         red.setPosition(new Point3d(0,Math.sin(time/20), Math.cos(time/20)));

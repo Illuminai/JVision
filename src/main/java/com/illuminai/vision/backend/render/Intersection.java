@@ -1,6 +1,7 @@
 package com.illuminai.vision.backend.render;
 
 import com.illuminai.vision.backend.math.Point3d;
+import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.scene.shape.Shape;
 
 /**
@@ -19,6 +20,11 @@ public class Intersection {
     private Shape shape;
 
     /**
+     * the normal vector
+     */
+    private Vector3d normal;
+
+    /**
      * the time
      */
     private double time;
@@ -35,11 +41,20 @@ public class Intersection {
      * @param shape the shape
      * @param time  the time
      */
-    public Intersection(Ray ray, Shape shape, double time) {
+    public Intersection(Ray ray, Shape shape, Vector3d normal, double time) {
         this.ray = ray;
         this.shape = shape;
+        this.normal = normal.normalize();
         this.time = time;
         point = ray.getPointOnRay(time);
+    }
+
+    /**
+     * @return the reflection ray
+     */
+    public Ray getReflectionRay() {
+        Vector3d incoming = ray.getDirection().normalize();
+        return new Ray(point, incoming.subtract(normal.scale(2.0 * incoming.dot(normal))));
     }
 
     /**
@@ -54,6 +69,13 @@ public class Intersection {
      */
     public Shape getShape() {
         return shape;
+    }
+
+    /**
+     * @return the normal vector
+     */
+    public Vector3d getNormal() {
+        return normal;
     }
 
     /**
