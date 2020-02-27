@@ -12,7 +12,6 @@ import java.util.List;
  * A scene
  */
 public class Scene {
-    private double time = 0;
     /**
      * the shapes
      */
@@ -61,7 +60,7 @@ public class Scene {
     public void sceneInit() {
         for(int x = -5; x < 6; x++) {
             if(x == 5)
-                getShapes().add(new Sphere(new Point3d(x/10.0,0,0),.05,0x0));
+                getShapes().add(new Sphere(new Point3d(x/10.0,0,0),.05,0x7f0000));
             else
             getShapes().add(new Sphere(new Point3d(x/10.0,0,0),.05,0xff0000));
 
@@ -69,13 +68,13 @@ public class Scene {
 
         for(int y = -5; y < 6; y++) {
             if(y == 5)
-                getShapes().add(new Sphere(new Point3d(0,y/10.0,0),.05,0));
+                getShapes().add(new Sphere(new Point3d(0,y/10.0,0),.05,0x007f00));
             else
             getShapes().add(new Sphere(new Point3d(0,y/10.0,0),.05,0x00ff00));
         }
         for(int z = -5; z < 6; z++) {
             if(z == 5)
-                getShapes().add(new Sphere(new Point3d(0,0,z/10.0),.05,0));
+                getShapes().add(new Sphere(new Point3d(0,0,z/10.0),.05,0x00007f));
             else
             getShapes().add(new Sphere(new Point3d(0,0,z/10.0),.05,0x0000ff));
         }

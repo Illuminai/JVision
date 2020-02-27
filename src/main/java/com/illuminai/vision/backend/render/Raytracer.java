@@ -80,7 +80,9 @@ public class Raytracer {
 
     /** Moves the camera forward in the direction perpendicular to {@link #rotation}*/
     public void moveSideward(double amount) {
-        position.set(position.add(Matrix3x3.createRotationMatrix('z',Math.PI/2).transformed(getDirection().scale(amount))));
+        Vector3d p = new Vector3d(getDirection());
+        p.setZ(0);
+        position.set(position.add(Matrix3x3.createRotationMatrix('z',Math.PI/2).transformed(p.scale(amount))));
     }
 
     public void moveUpwards(double amount) {
