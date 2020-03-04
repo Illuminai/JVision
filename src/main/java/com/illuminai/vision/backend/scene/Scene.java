@@ -2,6 +2,7 @@ package com.illuminai.vision.backend.scene;
 
 import com.illuminai.vision.backend.math.Point3d;
 import com.illuminai.vision.backend.scene.light.Light;
+import com.illuminai.vision.backend.scene.shape.Cylinder;
 import com.illuminai.vision.backend.scene.shape.Shape;
 import com.illuminai.vision.backend.scene.shape.Sphere;
 
@@ -49,6 +50,7 @@ public class Scene {
     private double time = 0;
 
     public void tick() {
+
         red.setPosition(new Point3d(0,Math.sin(time/20), Math.cos(time/20)));
         green.setPosition(new Point3d(Math.cos(time/20),0, Math.sin(time/20)));
         blue.setPosition(new Point3d(Math.sin(time/20), Math.cos(time/20), 0));
@@ -58,6 +60,9 @@ public class Scene {
     Sphere red, green, blue;
 
     public void sceneInit() {
+
+        getShapes().add(new Cylinder(new Point3d(0,0,0),1,1,0xffff00));
+
         for(int x = -5; x < 6; x++) {
             if(x == 5)
                 getShapes().add(new Sphere(new Point3d(x/10.0,0,0),.05,0x7f0000));
@@ -86,5 +91,7 @@ public class Scene {
 
         blue = new Sphere(new Point3d(0,1,0),.1,0x0000ff);
         getShapes().add(blue);
+
+
     }
 }

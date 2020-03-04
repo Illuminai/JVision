@@ -23,7 +23,6 @@ public class Raytracer {
     }
 
     public Screen renderScene() {
-        //TODO y-axis is rendered as height; the z-axis should be the height, as it makes it easier when doing math-stuff
         Screen screen = new Screen(500, 500);
         Matrix3x3 rotationMatrix = Matrix3x3.createRotationMatrix(rotation.getX(), rotation.getY(), rotation.getZ());
         for (int x = 0; x < 500; x++) {
@@ -47,7 +46,7 @@ public class Raytracer {
     private int traceRay(Ray ray) {
         Intersection intersection = getIntersection(ray);
         if (intersection == null) {
-            return 0x000000;
+            return 0xffffff;
         }
 
         double facingRatio = Math.max(0, intersection.getNormal().dot(ray.getDirection().scale(-1)));
