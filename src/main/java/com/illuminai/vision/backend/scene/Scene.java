@@ -6,6 +6,8 @@ import com.illuminai.vision.backend.scene.shape.Cylinder;
 import com.illuminai.vision.backend.scene.shape.Shape;
 import com.illuminai.vision.backend.scene.shape.Sphere;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,14 +56,18 @@ public class Scene {
         red.setPosition(new Point3d(0,Math.sin(time/20), Math.cos(time/20)));
         green.setPosition(new Point3d(Math.cos(time/20),0, Math.sin(time/20)));
         blue.setPosition(new Point3d(Math.sin(time/20), Math.cos(time/20), 0));
+
+        //test.setPosition(new Point3d(0,Math.sin(time/10)/2 - .5,0));
+        //test.setRotation(new Point3d(time/20,time/20, time/20));
+
         time++;
     }
 
     Sphere red, green, blue;
-
+    Cylinder test;
     public void sceneInit() {
 
-        getShapes().add(new Cylinder(new Point3d(0,0,0),1,1,0xffff00));
+        getShapes().add(test = new Cylinder(new Point3d(0,-.5,0),1,1, new Point3d(0,Math.PI/2,Math.PI/2),0xffff00));
 
         for(int x = -5; x < 6; x++) {
             if(x == 5)

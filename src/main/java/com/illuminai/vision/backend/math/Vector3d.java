@@ -171,4 +171,7 @@ public class Vector3d {
         return "(" + x + ", " + y + ", " + z + ")";
     }
 
+    public Point3d toPoint() {
+        return new Point3d(this.getX(), this.getY(), this.getZ());
+    }
 }

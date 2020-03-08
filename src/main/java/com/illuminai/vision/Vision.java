@@ -10,12 +10,11 @@ import com.illuminai.vision.frontend.GameClass;
 public class Vision {
 
     static void test() {
+        //TODO spot in the middle of cylinder?
         //TODO remove
-        Ray ray = new Ray(new Point3d(-1,-1,-1), new Vector3d(1,1,1));
-        Cylinder c = new Cylinder(new Point3d(0,0,0), 1,1,0 );
+        Ray ray = new Ray(new Point3d(-1,-.5,0), new Vector3d(1,0,0));
+        Cylinder c = new Cylinder(new Point3d(0,-.5,0),1,1, new Point3d(0,Math.PI/2,Math.PI/2),0xffff00 );
         Intersection s = c.getIntersection(ray);
-
-        //System.out.println(s.getNormal());
 
         //System.exit(0);
     }

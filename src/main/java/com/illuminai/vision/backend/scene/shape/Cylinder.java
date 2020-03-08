@@ -1,5 +1,6 @@
 package com.illuminai.vision.backend.scene.shape;
 
+import com.illuminai.vision.backend.math.Matrix3x3;
 import com.illuminai.vision.backend.math.Point3d;
 import com.illuminai.vision.backend.math.Vector;
 import com.illuminai.vision.backend.math.Vector3d;
@@ -9,21 +10,49 @@ import com.illuminai.vision.backend.render.Ray;
 public class Cylinder extends Shape {
     private double length;
     private double radius;
+    private Point3d rotation;
+
+    private Matrix3x3 rotTo, rotFrom;
     /**
      * Constructs and initializes a cylinder from the specified position and color.
      *
      * @param position the position
      * @param color    the color
      */
-    public Cylinder(Point3d position, double radius, double length, int color) {
+    public Cylinder(Point3d position, double radius, double length, Point3d rotation, int color) {
         super(position, color);
         this.radius = radius;
         this.length = length;
+        setRotation(rotation);
     }
 
+    public void setRotation(Point3d rotation) {
+        this.rotation = rotation;
+        this.rotTo = Matrix3x3.createRotationMatrix(rotation.getX(), rotation.getY(), rotation.getZ());
+        this.rotFrom = Matrix3x3.createRotationMatrix(-rotation.getX(), -rotation.getY(), -rotation.getZ());
+    }
+
+    public Point3d getRotationCopy() {
+        return new Point3d(rotation);
+    }
 
     @Override
-    public Intersection getIntersection(Ray ray) {
+    public Intersection getIntersection(Ray par) {
+        Ray ray = new Ray(par.getOrigin().subtract(this.getPosition().toVector()), rotTo.transformed(par.getDirection()));
+        ray.setOrigin(rotTo.transformed(ray.getOrigin().toVector()).toPoint());
+
+        Intersection i = getIntersectionInternal(ray);
+        if(i == null) {
+            return null;
+        }
+        i.setRay(par);
+        i.setPoint(ray.getPointOnRay(i.getTime()));
+        i.setNormal(rotFrom.transformed(i.getNormal()));
+
+        return i;
+    }
+
+    private Intersection getIntersectionInternal(Ray ray) {
         Intersection cy = getIntersectionWithCylinder(ray);
         Intersection pl = getIntersectionWithPlanes(ray);
 
