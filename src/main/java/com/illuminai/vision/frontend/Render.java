@@ -1,9 +1,8 @@
 package com.illuminai.vision.frontend;
 
 import com.illuminai.vision.backend.math.Point3d;
-import com.illuminai.vision.backend.render.Raytracer;
+import com.illuminai.vision.backend.render.Raymarcher;
 import com.illuminai.vision.backend.scene.Scene;
-import com.illuminai.vision.backend.scene.shape.Sphere;
 import com.illuminai.vision.frontend.listener.GameListener;
 
 import java.awt.event.KeyEvent;
@@ -11,7 +10,7 @@ import java.awt.event.KeyEvent;
 public class Render {
     private final Screen renderOn;
     private final GameCanvas parent;
-    private Raytracer tracer;
+    private Raymarcher tracer;
 
     public Render(Screen renderOn, GameCanvas parent) {
         this.renderOn = renderOn;
@@ -22,7 +21,7 @@ public class Render {
     private void init() {
         Scene scene = new Scene();
         scene.sceneInit();
-        tracer = new Raytracer(scene);
+        tracer = new Raymarcher(scene);
     }
 
     public void render() {

@@ -4,6 +4,7 @@ import com.illuminai.vision.backend.math.Point3d;
 import com.illuminai.vision.backend.scene.light.Light;
 import com.illuminai.vision.backend.scene.shape.Shape;
 import com.illuminai.vision.backend.scene.shape.Sphere;
+import com.illuminai.vision.backend.scene.shape.Torus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,15 +77,17 @@ public class Scene {
             if(z == 5)
                 getShapes().add(new Sphere(new Point3d(0,0,z/10.0),.05,0x00007f));
             else
-            getShapes().add(new Sphere(new Point3d(0,0,z/10.0),.05,0x0000ff));
+                getShapes().add(new Sphere(new Point3d(0, 0, z / 10.0), .05, 0x0000ff));
         }
-        red = new Sphere(new Point3d(0, 0, 1), .1,0xff0000);
+        red = new Sphere(new Point3d(0, 0, 1), .1, 0xff0000);
         getShapes().add(red);
 
-        green = new Sphere(new Point3d(1, 0, 0), .1,0x00ff00);
+        green = new Sphere(new Point3d(1, 0, 0), .1, 0x00ff00);
         getShapes().add(green);
 
-        blue = new Sphere(new Point3d(0,1,0),.1,0x0000ff);
+        blue = new Sphere(new Point3d(0, 1, 0), .1, 0x0000ff);
         getShapes().add(blue);
+
+        getShapes().add(new Torus(new Point3d(-5, -5, -5), 0xff00ff, .3, .1));
     }
 }
