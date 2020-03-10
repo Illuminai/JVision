@@ -76,6 +76,39 @@ public class Matrix3x3 {
         return multiply(multiply(createRotationMatrix('x',x), createRotationMatrix('y',y)),createRotationMatrix('z', z));
     }
 
+    /**This method returns a value that reverses the effect of the matrix created by {@link #createRotationMatrix(double, double, double)} <br>
+     *
+     * This method returns a matrix, that when multiplied with a matrix returned by {@link #createRotationMatrix(double, double, double)} yields a matrix that is diagonally filled with ones.<br>
+     * Example:
+     * <code>
+     *     double alpha = ..., beta = ..., gamma = ...; <br>
+     *     Matrix3x3 a = createRotationMatrix(alpha, beta, gamma);<br>
+     *     Matrix3x3 b = createReverseRotationMatrix(-alpha, -beta, -gamma);<br>
+     *     Matrix3x3 c = a.multiply(b); <br>
+     * </code>
+     * In this example, regardless of the values of {@code alpha}, {@code beta} and {@code gamma}, {@code c} will have the value of
+     * <table>
+     *     <tr>
+     *         <td>1</td>
+     *         <td>0</td>
+     *         <td>0</td>
+     *     </tr>
+     *     <tr>
+     *          <td>0</td>
+     *          <td>1</td>
+     *          <td>0</td>
+     *      </tr>
+     *      <tr>
+     *          <td>0</td>
+     *          <td>0</td>
+     *          <td>1</td>
+     *      </tr>
+     * </table>
+     * */
+    public static Matrix3x3 createReverseRotationMatrix(double x, double y, double z) {
+        return multiply(createRotationMatrix('z',z),multiply(createRotationMatrix('y',y),createRotationMatrix('x',x)));
+    }
+
     /** Only for debug */
     public void print() {
         for(int row = 0; row < 3; row ++) {

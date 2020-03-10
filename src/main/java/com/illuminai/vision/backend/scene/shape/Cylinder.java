@@ -2,7 +2,6 @@ package com.illuminai.vision.backend.scene.shape;
 
 import com.illuminai.vision.backend.math.Matrix3x3;
 import com.illuminai.vision.backend.math.Point3d;
-import com.illuminai.vision.backend.math.Vector;
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.render.Intersection;
 import com.illuminai.vision.backend.render.Ray;
@@ -29,7 +28,7 @@ public class Cylinder extends Shape {
     public void setRotation(Point3d rotation) {
         this.rotation = rotation;
         this.rotTo = Matrix3x3.createRotationMatrix(rotation.getX(), rotation.getY(), rotation.getZ());
-        this.rotFrom = Matrix3x3.createRotationMatrix(-rotation.getX(), -rotation.getY(), -rotation.getZ());
+        this.rotFrom = Matrix3x3.createReverseRotationMatrix(-rotation.getX(), -rotation.getY(), -rotation.getZ());
     }
 
     public Point3d getRotationCopy() {
