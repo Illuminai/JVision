@@ -92,4 +92,23 @@ public class Intersection {
         return point;
     }
 
+    public void setRay(Ray ray) {
+        this.ray = ray;
+    }
+
+    public void setShape(Shape shape) {
+        this.shape = shape;
+    }
+
+    public void setNormal(Vector3d normal) {
+        this.normal = normal;
+    }
+
+    public void setTime(double time) {
+        this.time = time;
+    }
+
+    public void setPoint(Point3d point) {
+        this.point = point;
+    }
 }

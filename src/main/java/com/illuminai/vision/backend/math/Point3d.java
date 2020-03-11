@@ -33,6 +33,10 @@ public class Point3d {
         this.z = z;
     }
 
+    public Point3d(Point3d o) {
+        this(o.getX(), o.getY(), o.getZ());
+    }
+
     /**
      * Calculates the sum of itself and the second vector
      *
