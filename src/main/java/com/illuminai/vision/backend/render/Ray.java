@@ -1,6 +1,5 @@
 package com.illuminai.vision.backend.render;
 
-import com.illuminai.vision.backend.math.Point3d;
 import com.illuminai.vision.backend.math.Vector3d;
 
 /**
@@ -11,7 +10,7 @@ public class Ray {
     /**
      * the origin
      */
-    private Point3d origin;
+    private Vector3d origin;
 
     /**
      * the direction
@@ -24,7 +23,7 @@ public class Ray {
      * @param origin    the origin
      * @param direction the direction
      */
-    public Ray(Point3d origin, Vector3d direction) {
+    public Ray(Vector3d origin, Vector3d direction) {
         this.origin = origin;
         this.direction = direction.normalize();
     }
@@ -35,21 +34,21 @@ public class Ray {
      * @param time the time
      * @return the point
      */
-    public Point3d getPointOnRay(double time) {
+    public Vector3d getPointOnRay(double time) {
         return origin.add(direction.scale(time));
     }
 
     /**
      * @return the origin
      */
-    public Point3d getOrigin() {
+    public Vector3d getOrigin() {
         return origin;
     }
 
     /**
      * @param origin the origin
      */
-    public void setOrigin(Point3d origin) {
+    public void setOrigin(Vector3d origin) {
         this.origin = origin;
     }
 

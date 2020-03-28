@@ -1,6 +1,6 @@
 package com.illuminai.vision.frontend;
 
-import com.illuminai.vision.backend.math.Point3d;
+import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.render.Raymarcher;
 import com.illuminai.vision.backend.scene.Scene;
 import com.illuminai.vision.frontend.listener.GameListener;
@@ -30,25 +30,25 @@ public class Render {
 
     public void tick() {
         GameListener l = parent.getListener();
-        Point3d location = tracer.getPosition();
-        Point3d rotation = tracer.getRotation();
+        Vector3d location = tracer.getCamera().getPosition();
+        Vector3d rotation = tracer.getCamera().getRotation();
         if(l.isKeyDown(KeyEvent.VK_W)) {
-            tracer.moveForward(.1);
+            tracer.getCamera().moveForward(.1);
         }
         if(l.isKeyDown(KeyEvent.VK_S)) {
-            tracer.moveForward(-.1);
+            tracer.getCamera().moveForward(-.1);
         }
         if(l.isKeyDown(KeyEvent.VK_D)) {
-            tracer.moveSideward(-.1);
+            tracer.getCamera().moveSideward(-.1);
         }
         if(l.isKeyDown(KeyEvent.VK_A)) {
-            tracer.moveSideward(.1);
+            tracer.getCamera().moveSideward(.1);
         }
         if(l.isKeyDown(KeyEvent.VK_SPACE)) {
-            tracer.moveUpwards(.1);
+            tracer.getCamera().moveUpwards(.1);
         }
         if(l.isKeyDown(KeyEvent.VK_SHIFT)) {
-            tracer.moveUpwards(-.1);
+            tracer.getCamera().moveUpwards(-.1);
         }
 
         if(l.isKeyDown(KeyEvent.VK_L)) {
@@ -69,6 +69,7 @@ public class Render {
         if(l.isKeyDown(KeyEvent.VK_O)) {
             rotation.setX(rotation.getX() + .05);
         }
+        tracer.getCamera().setRotation(rotation);
         tracer.getScene().tick();
     }
 

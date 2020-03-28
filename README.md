@@ -1,7 +1,7 @@
-# Vision
+# JVision
 
 ### About
-Vision is a physically based renderer built with Java.
+JVision is a physically based renderer built with Java.
 
 ### Contributors
 
@@ -22,7 +22,7 @@ Vision is a physically based renderer built with Java.
           <img src="https://avatars3.githubusercontent.com/u/52047490" width="100px;" alt="Wolkenwalker"/>
           <br/>
           <sub>
-            <b>Wolkenwalker</b>
+            <b>Mikail Gedik</b>
           </sub>
       </a>
       <br/>
@@ -31,4 +31,4 @@ Vision is a physically based renderer built with Java.
 </table>
 
 ### License
-Vision is licensed under the MIT license.
+JVision is licensed under the MIT license.

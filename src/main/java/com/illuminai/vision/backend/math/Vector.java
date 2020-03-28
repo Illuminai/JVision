@@ -40,7 +40,7 @@ public class Vector {
      */
     public Vector add(Vector vector) {
         Vector v = new Vector(this);
-        for(int i = 0; i < this.content.length; i++) {
+        for (int i = 0; i < this.content.length; i++) {
             v.content[i] += vector.content[i];
         }
         return v;
@@ -54,7 +54,7 @@ public class Vector {
      */
     public Vector subtract(Vector vector) {
         Vector v = new Vector(this);
-        for(int i = 0; i < this.content.length; i++) {
+        for (int i = 0; i < this.content.length; i++) {
             v.content[i] -= vector.content[i];
         }
         return v;
@@ -68,7 +68,7 @@ public class Vector {
      */
     public Vector scale(double scalar) {
         Vector t = new Vector(this);
-        for(int i= 0; i < this.content.length; i++) {
+        for (int i = 0; i < this.content.length; i++) {
             t.content[i] *= scalar;
         }
         return t;
@@ -81,9 +81,9 @@ public class Vector {
      * @return the dot product
      */
     public double dot(Vector vector) {
-        double d =0;
-        for(int i = 0; i < content.length; i++) {
-            d += vector.content[i] *  this.content[i];
+        double d = 0;
+        for (int i = 0; i < content.length; i++) {
+            d += vector.content[i] * this.content[i];
         }
         return d;
     }
@@ -105,7 +105,7 @@ public class Vector {
      */
     public double length() {
         double d = 0;
-        for(double f: content) {
+        for (double f : content) {
             d += f * f;
         }
         return Math.sqrt(d);
@@ -117,7 +117,7 @@ public class Vector {
      * @return the normalized vector
      */
     public Vector normalize() {
-        if(this.length() == 0) {
+        if (this.length() == 0) {
             return new Vector(this);
         }
         return scale(1 / length());
