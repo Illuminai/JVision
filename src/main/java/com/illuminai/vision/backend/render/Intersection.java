@@ -1,8 +1,7 @@
 package com.illuminai.vision.backend.render;
 
-import com.illuminai.vision.backend.math.Point3d;
 import com.illuminai.vision.backend.math.Vector3d;
-import com.illuminai.vision.backend.scene.shape.Shape;
+import com.illuminai.vision.backend.scene.shape.Mesh;
 
 /**
  * An intersection
@@ -17,7 +16,7 @@ public class Intersection {
     /**
      * the shape
      */
-    private Shape shape;
+    private Mesh mesh;
 
     /**
      * the normal vector
@@ -32,18 +31,18 @@ public class Intersection {
     /**
      * the point
      */
-    private Point3d point;
+    private Vector3d point;
 
     /**
      * Constructs and initializes an Intersection from ray, shape and time.
      *
-     * @param ray   the ray
-     * @param shape the shape
-     * @param time  the time
+     * @param ray  the ray
+     * @param mesh the mesh
+     * @param time the time
      */
-    public Intersection(Ray ray, Shape shape, Vector3d normal, double time) {
+    public Intersection(Ray ray, Mesh mesh, Vector3d normal, double time) {
         this.ray = ray;
-        this.shape = shape;
+        this.mesh = mesh;
         this.normal = normal.normalize();
         this.time = time;
         point = ray.getPointOnRay(time);
@@ -65,10 +64,10 @@ public class Intersection {
     }
 
     /**
-     * @return the shape
+     * @return the mesh
      */
-    public Shape getShape() {
-        return shape;
+    public Mesh getMesh() {
+        return mesh;
     }
 
     /**
@@ -88,7 +87,7 @@ public class Intersection {
     /**
      * @return the point
      */
-    public Point3d getPoint() {
+    public Vector3d getPoint() {
         return point;
     }
 
@@ -96,8 +95,8 @@ public class Intersection {
         this.ray = ray;
     }
 
-    public void setShape(Shape shape) {
-        this.shape = shape;
+    public void setMesh(Mesh mesh) {
+        this.mesh = mesh;
     }
 
     public void setNormal(Vector3d normal) {
@@ -108,7 +107,7 @@ public class Intersection {
         this.time = time;
     }
 
-    public void setPoint(Point3d point) {
+    public void setPoint(Vector3d point) {
         this.point = point;
     }
 }

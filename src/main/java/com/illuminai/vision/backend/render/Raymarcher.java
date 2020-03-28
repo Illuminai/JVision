@@ -1,75 +1,72 @@
 package com.illuminai.vision.backend.render;
 
-import com.illuminai.vision.backend.math.Matrix3x3;
-import com.illuminai.vision.backend.math.Point3d;
 import com.illuminai.vision.backend.math.Vector3d;
+import com.illuminai.vision.backend.scene.Camera;
 import com.illuminai.vision.backend.scene.Scene;
-import com.illuminai.vision.backend.scene.shape.Shape;
+import com.illuminai.vision.backend.scene.shape.Mesh;
 import com.illuminai.vision.frontend.Screen;
 
 public class Raymarcher {
 
     private Scene scene;
-
-    private Point3d position;
-
-    private Point3d rotation;
+    private Camera camera;
 
     public Raymarcher(Scene scene) {
         this.scene = scene;
-        position = new Point3d(0, 0, 0);
-        position = new Point3d(-5, 0, 0);
-        rotation = new Point3d(0, 0, 0);
+        camera = new Camera(new Vector3d(-5, 0, 0),
+                new Vector3d(0, 0, 0));
     }
 
     public Screen renderScene() {
-        Screen screen = new Screen(500, 500);
-        Matrix3x3 rotationMatrix = Matrix3x3.createRotationMatrix(rotation.getX(), rotation.getY(), rotation.getZ());
-        for (int x = 0; x < 500; x++) {
-            for (int y = 0; y < 500; y++) {
-                double u = (x - 250) / 500.0;
-                double v = (y - 250) / 500.0;
-                Point3d origin = new Point3d(position.getX(), position.getY(), position.getZ());
-                Vector3d direction = rotationMatrix.transformed(new Vector3d(10, 0, 0)
-                        .add(new Vector3d(0, 0, -4).scale(v))
-                        .add(new Vector3d(0, 4, 0).scale(u)));
+        Screen screen = new Screen(800, 600);
+        for (int x = 0; x < 800; x++) {
+            for (int y = 0; y < 600; y++) {
+                double u = (x - 400) / 800.0;
+                double v = (y - 300) / 600.0;
+                Ray ray = camera.getRay(u, v);
 
-                Ray ray = new Ray(origin, direction);
-
-                int color = marchRay(ray);
-                screen.setPixel(x, y, color);
+                Color color = marchRay(ray);
+                screen.setPixel(x, y, color.getRGB());
             }
         }
         return screen;
     }
 
-    private int marchRay(Ray ray) {
+
+    private Color marchRay(Ray ray) {
         Intersection intersection = getIntersection(ray);
         if (intersection == null) {
-            return 0xffffff;
+            Vector3d unitDirection = ray.getDirection().normalize();
+            double t = 0.5 * (unitDirection.getZ() + 1.0);
+            Vector3d colorVector = new Vector3d(1, 1, 1).scale(1.0 - t).add(new Vector3d(.5, .7, 1).scale(t));
+            return new Color((int) (255 * colorVector.getX()), (int) (255 * colorVector.getY()), (int) (255 * (colorVector.getZ())));
         }
 
-        double facingRatio = Math.max(0, intersection.getNormal().dot(ray.getDirection().scale(-1)));
-        Color color = new Color(intersection.getShape().getColor());
-        Color intense = color.intensify(facingRatio);
+        //normal direction algorithm
+        Vector3d normal = intersection.getNormal();
+        return new Color((int) (255 * (normal.getX() + 1)), (int) (255 * (normal.getY() + 1)), (int) (255 * (normal.getZ() + 1))).intensify(0.5);
 
-        return intense.getRGB();
+        //facing ratio algorithm
+        /*double facingRatio = Math.max(0, intersection.getNormal().dot(ray.getDirection().scale(-1)));
+        Color color = new Color(0xffff00);
+        Color intense = color.intensify(facingRatio);
+        return intense;*/
+
     }
 
     public Intersection getIntersection(Ray ray) {
         double time = 0;
         int maxDist = 100;
-
         while (time < maxDist) {
-            Shape intersected = null;
-            double minDist = Double.POSITIVE_INFINITY;
-            Point3d point = ray.getPointOnRay(time);
+            Mesh intersected = null;
+            double minDist = maxDist;
+            Vector3d point = ray.getPointOnRay(time);
 
-            for (Shape shape : scene.getShapes()) {
-                double d = shape.getDistance(point);
+            for (Mesh sdf : scene.getMeshes()) {
+                double d = sdf.getDistance(point);
                 if (d < minDist) {
                     minDist = d;
-                    intersected = shape;
+                    intersected = sdf;
                 }
             }
 
@@ -82,59 +79,19 @@ public class Raymarcher {
         return null;
     }
 
-    public Vector3d estimateNormal(Shape shape, Point3d point) {
+    public Vector3d estimateNormal(Mesh mesh, Vector3d point) {
         return new Vector3d(
-                shape.getDistance(point.add(new Vector3d(10e-6, 0, 0))) - shape.getDistance(point.subtract(new Vector3d(10e-6, 0, 0))),
-                shape.getDistance(point.add(new Vector3d(0, 10e-6, 0))) - shape.getDistance(point.subtract(new Vector3d(0, 10e-6, 0))),
-                shape.getDistance(point.add(new Vector3d(0, 0, 10e-6))) - shape.getDistance(point.subtract(new Vector3d(0, 0, 10e-6)))
+                mesh.getDistance(point.add(new Vector3d(10e-10, 0, 0))) - mesh.getDistance(point.subtract(new Vector3d(10e-10, 0, 0))),
+                mesh.getDistance(point.add(new Vector3d(0, 10e-10, 0))) - mesh.getDistance(point.subtract(new Vector3d(0, 10e-10, 0))),
+                mesh.getDistance(point.add(new Vector3d(0, 0, 10e-10))) - mesh.getDistance(point.subtract(new Vector3d(0, 0, 10e-10)))
         ).normalize();
     }
 
-
-    /**
-     * Returns the direction which currently looked at
-     */
-    public Vector3d getDirection() {
-        return Matrix3x3.createRotationMatrix(rotation.getX(), rotation.getY(), rotation.getZ()).transformed(new Vector3d(1, 0, 0));
-    }
-
-    /**
-     * Moves the camera forward in the direction of {@link #rotation}
-     */
-    public void moveForward(double amount) {
-        position.set(position.add(getDirection().scale(amount)));
-    }
-
-    /**
-     * Moves the camera forward in the direction perpendicular to {@link #rotation}
-     */
-    public void moveSideward(double amount) {
-        Vector3d p = new Vector3d(getDirection());
-        p.setZ(0);
-        position.set(position.add(Matrix3x3.createRotationMatrix('z', Math.PI / 2).transformed(p.scale(amount))));
-    }
-
-    public void moveUpwards(double amount) {
-        position.set(position.add(new Vector3d(0, 0, 1).scale(amount)));
+    public Camera getCamera() {
+        return camera;
     }
 
     public Scene getScene() {
         return scene;
-    }
-
-    public Point3d getPosition() {
-        return position;
-    }
-
-    public void setPosition(Point3d position) {
-        this.position = position;
-    }
-
-    public Point3d getRotation() {
-        return rotation;
-    }
-
-    public void setRotation(Point3d rotation) {
-        this.rotation = rotation;
     }
 }

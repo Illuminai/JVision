@@ -38,17 +38,6 @@ public class Vector3d {
     }
 
     /**
-     * Constructs and initializes a Vector3d from the distance of two points
-     *
-     * @param from the start point
-     * @param to   the end point
-     */
-    public Vector3d(Point3d from, Point3d to) {
-        this(to.getX() - from.getX(), to.getY() - from.getY(), to.getZ() - from.getZ());
-    }
-
-
-    /**
      * Calculates the sum of itself and the second vector
      *
      * @param vector the second vector
@@ -113,7 +102,7 @@ public class Vector3d {
      * @return the normalized vector
      */
     public Vector3d normalize() {
-        if(this.length() == 0) {
+        if (this.length() == 0) {
             return new Vector3d(this);
         }
         return scale(1 / length());
@@ -161,6 +150,12 @@ public class Vector3d {
         this.z = z;
     }
 
+    public void set(Vector3d vector) {
+        x = vector.x;
+        y = vector.y;
+        z = vector.z;
+    }
+
     /**
      * Returns a string that contains the values of the vector
      *
@@ -169,9 +164,5 @@ public class Vector3d {
     @Override
     public String toString() {
         return "(" + x + ", " + y + ", " + z + ")";
-    }
-
-    public Point3d toPoint() {
-        return new Point3d(this.getX(), this.getY(), this.getZ());
     }
 }
