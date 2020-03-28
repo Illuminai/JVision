@@ -26,6 +26,16 @@ public class Render {
 
     public void render() {
         renderOn.drawScreen(0,0, tracer.renderScene());
+        drawHUD();
+    }
+
+    private void drawHUD() {
+        String text = "";
+        text += "renderResolution: " + "TODO" + "\n";
+        text += "displayResolution: " + this.parent.getWidth() + "/" + this.parent.getHeight() + "\n";
+
+        Screen screen =  FontCreator.createFont(text, 0x0, -1);
+        renderOn.drawScreen(0,0, screen.getScaledScreen(renderOn.getWidth() * 3 / 4, screen.getHeight()));
     }
 
     public void tick() {

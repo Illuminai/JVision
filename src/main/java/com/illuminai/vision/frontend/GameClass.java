@@ -37,6 +37,24 @@ public class GameClass extends JFrame {
         // canvas.start();
     }
 
+    private void createMenu() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menuFile = new JMenu("File");
+        JMenuItem itemPause = new JCheckBoxMenuItem("Pause");
+        JMenuItem itemSettings = new JMenuItem("Settings");
+        JMenuItem itemExit = new JMenuItem("Exit");
+
+
+        menuFile.add(itemPause);
+        menuFile.addSeparator();
+        menuFile.add(itemSettings);
+        menuFile.addSeparator();
+        menuFile.add(itemExit);
+
+        menuBar.add(menuFile);
+        setJMenuBar(menuBar);
+    }
+
     public synchronized void start() {
         canvas.start();
     }
@@ -50,6 +68,8 @@ public class GameClass extends JFrame {
     }
 
     private void initFrame(int width, int height) {
+        createMenu();
+
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(true);
 
