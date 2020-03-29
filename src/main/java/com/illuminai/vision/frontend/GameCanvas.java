@@ -1,6 +1,5 @@
 package com.illuminai.vision.frontend;
 
-import com.illuminai.vision.frontend.listener.EventExecuter;
 import com.illuminai.vision.frontend.listener.GameListener;
 
 import java.awt.*;
@@ -162,6 +161,10 @@ public class GameCanvas extends Canvas {
 
     public GameListener getListener() {
         return listener;
+    }
+
+    public Render getRender() {
+        return render;
     }
 
     public int getOriginalWidth() {

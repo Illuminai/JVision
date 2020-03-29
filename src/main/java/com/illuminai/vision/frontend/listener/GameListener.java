@@ -2,13 +2,7 @@ package com.illuminai.vision.frontend.listener;
 
 import com.illuminai.vision.frontend.GameCanvas;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -18,6 +12,8 @@ import java.util.LinkedHashMap;
  * {@link #isKeyDown(int)}, {@link #isMouseDown()} and {@link #getMouseButton()} or {@link #getMouseX()} and {@link #getMouseY()} the methods for the current status.*/
 public class GameListener implements KeyListener, FocusListener, MouseListener, MouseMotionListener {
     private static final String EVENT_MOUSE_PRESSED = "EMP", EVENT_KEY_RELEASED = "EKR", EVENT_KEY_PRESSED = "EKP";
+    private static final String EVENT_CHANGE_ATTRIBUTE = "ECA";
+
 
     private final boolean[] keys = new boolean[65536];
 
@@ -137,6 +133,12 @@ public class GameListener implements KeyListener, FocusListener, MouseListener, 
         }
     }
 
+    public void changeAttribute(String name, Object newVal) {
+        synchronized (LOCK) {
+            queuedEvents.put(GameListener.EVENT_CHANGE_ATTRIBUTE, new Object[]{name, newVal});
+        }
+    }
+
     public void flushEvents() {
         synchronized (LOCK) {
             if (!queuedEvents.isEmpty()) {
@@ -165,8 +167,13 @@ public class GameListener implements KeyListener, FocusListener, MouseListener, 
                                 ex.keyReleased(e.getKeyCode());
                             }
                             break;
+                        case GameListener.EVENT_CHANGE_ATTRIBUTE:
+                            for (EventExecuter ex : this.executers) {
+                                ex.changeAttribute((String)((Object[])value)[0], ((Object[])value)[1]);
+                            }
+                            break;
                         default:
-                            System.out.println("Unknown name: " + name);
+                            throw new RuntimeException("Unknown name: " + name);
                     }
                 });
                 queuedEvents.clear();

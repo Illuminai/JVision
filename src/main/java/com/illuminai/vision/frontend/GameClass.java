@@ -17,14 +17,14 @@ public class GameClass extends JFrame {
     public static final String VERSION_NAME = "Alpha 0.0.1";
 
     private GameClass(int width, int height) throws HeadlessException {
-        super("PrimitiveGame " + VERSION_NAME + " (" + VERSION + ")");
+        super("PrimitiveRenderer " + VERSION_NAME + " (" + VERSION + ")");
         System.out.println("Starting on version: " + VERSION_NAME + " (" + VERSION + ")");
         initFrame(width, height);
         addFocusListener(canvas.getListener());
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                canvas.stop();
+                onExit();
             }
         });
         this.addComponentListener(new ComponentAdapter() {
@@ -37,13 +37,24 @@ public class GameClass extends JFrame {
         // canvas.start();
     }
 
+    private void onExit() {
+        canvas.stop();
+    }
+
     private void createMenu() {
         JMenuBar menuBar = new JMenuBar();
         JMenu menuFile = new JMenu("File");
         JMenuItem itemPause = new JCheckBoxMenuItem("Pause");
-        JMenuItem itemSettings = new JMenuItem("Settings");
-        JMenuItem itemExit = new JMenuItem("Exit");
+        itemPause.addActionListener((e) -> this.canvas.getListener().changeAttribute(Render.ATT_PAUSE, itemPause.isSelected()));
 
+        JMenuItem itemSettings = new JMenuItem("Settings");
+        itemSettings.addActionListener((e) -> this.canvas.getListener().changeAttribute(Render.ATT_SAMPLES, Integer.valueOf(JOptionPane.showInputDialog("Input amount of samples"))));
+
+        JMenuItem itemExit = new JMenuItem("Exit");
+        itemExit.addActionListener((e) -> {
+            onExit();
+            dispose();
+        });
 
         menuFile.add(itemPause);
         menuFile.addSeparator();
@@ -80,7 +91,7 @@ public class GameClass extends JFrame {
         this.setLocationRelativeTo(null);
     }
 
-    public static GameClass createGame(String[] args, int width, int height) throws Exception {
+    public static GameClass createGame(String[] args, int width, int height) {
         System.setOut(new PrintStream(System.out) {
             @Override
             public void print(String x) {
@@ -118,8 +129,7 @@ public class GameClass extends JFrame {
                         + Thread.currentThread().getStackTrace()[4].getLineNumber() + "]";
             }
         });
-        GameClass game = new GameClass(width, height);
-        return game;
+        return new GameClass(width, height);
     }
 }
 

@@ -1,5 +1,6 @@
 package com.illuminai.vision.backend.render;
 
+import com.illuminai.vision.backend.math.Matrix3x3;
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.scene.Camera;
 import com.illuminai.vision.backend.scene.Scene;
@@ -11,27 +12,29 @@ public class Raymarcher {
     private Scene scene;
     private Camera camera;
 
+    private int renderWidth = 800, renderHeight = 600;
+
     public Raymarcher(Scene scene) {
         this.scene = scene;
         camera = new Camera(new Vector3d(-5, 0, 0),
                 new Vector3d(0, 0, 0));
     }
 
-    public Screen renderScene() {
-        Screen screen = new Screen(800, 600);
-        for (int x = 0; x < 800; x++) {
-            for (int y = 0; y < 600; y++) {
-                double u = (x - 400) / 800.0;
-                double v = (y - 300) / 600.0;
+    public Screen renderScene(double diversionAngle) {
+        Screen screen = new Screen(renderWidth, renderHeight);
+        Matrix3x3 diversionMatrix = Matrix3x3.createRotationMatrix(diversionAngle, diversionAngle, diversionAngle);
+        for (int x = 0; x < renderWidth; x++) {
+            for (int y = 0; y < renderHeight; y++) {
+                double u = (x - renderWidth / 2.0) / renderWidth;
+                double v = (y - renderHeight / 2.0) / renderHeight;
                 Ray ray = camera.getRay(u, v);
-
+                ray.setDirection(diversionMatrix.transformed(ray.getDirection()));
                 Color color = marchRay(ray);
                 screen.setPixel(x, y, color.getRGB());
             }
         }
         return screen;
     }
-
 
     private Color marchRay(Ray ray) {
         Intersection intersection = getIntersection(ray);
@@ -71,6 +74,7 @@ public class Raymarcher {
             }
 
             if (minDist <= 10e-6 * time) {
+                assert intersected != null;
                 Vector3d normal = estimateNormal(intersected, point);
                 return new Intersection(ray, intersected, normal, time);
             }
@@ -93,5 +97,13 @@ public class Raymarcher {
 
     public Scene getScene() {
         return scene;
+    }
+
+    public int getRenderWidth() {
+        return renderWidth;
+    }
+
+    public int getRenderHeight() {
+        return renderHeight;
     }
 }
