@@ -13,23 +13,25 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public class Render implements EventExecuter {
-    /** Attribute for samples*/
-    public static final String ATT_SAMPLES = "ATT_SAMPLES", ATT_PAUSE = "ATT_PAUSE";
-
     private final Screen renderOn, tempScreen;
     private ScreenAverager averager;
     private final GameCanvas parent;
     private Raymarcher tracer;
-    private boolean pause;
+    private long lastFrame;
 
     private Mesh selectedMesh;
 
+    private Settings settings;
+
     public Render(Screen renderOn, GameCanvas parent) {
         this.renderOn = renderOn;
+        this.settings = new Settings();
+        initSettings();
+
         this.tempScreen = new Screen(renderOn.getWidth(), renderOn.getHeight());
         this.parent = parent;
         this.parent.getListener().addExecuter(this);
-        this.averager = new ScreenAverager(1,renderOn.getWidth(), renderOn.getHeight());
+        this.averager = new ScreenAverager(settings.getSamples(),renderOn.getWidth(), renderOn.getHeight());
         init();
     }
 
@@ -39,12 +41,29 @@ public class Render implements EventExecuter {
         tracer = new Raymarcher(scene);
     }
 
+    private void initSettings() {
+        settings.setPause(false);
+        settings.setSamples(1);
+    }
+
+    /** Applies the settings to the render engine*/
+    private void applySettings() {
+        if(averager.getAmount() != settings.getSamples()) {
+            averager.setAmount(settings.getSamples());
+        }
+    }
+
     public void render() {
-        if(!pause) {
+        applySettings();
+        if(!settings.getPause()) {
+            lastFrame = System.currentTimeMillis();
+
             for(int i = 0; i < averager.getAmount(); i++) {
-                averager.getScreens()[i] = tracer.renderScene(Math.random() * 0.001);
+                averager.getScreens()[i] = tracer.renderScene(Math.random());
             }
+
             tempScreen.drawScreen(0,0, averager.calculateAverage());
+            lastFrame = System.currentTimeMillis() - lastFrame;
         }
         renderOn.drawScreen(0,0,tempScreen);
         drawHUD();
@@ -52,7 +71,7 @@ public class Render implements EventExecuter {
 
     private void drawHUD() {
         String text = "";
-        text += "renderResolution: " + "TODO" + "\n";
+        text += "renderResolution:  " + this.tracer.getRenderWidth()+ "/" + this.tracer.getRenderHeight() + "\n";
         text += "displayResolution: " + this.parent.getWidth() + "/" + this.parent.getHeight() + "\n";
 
         text += "selected: ";
@@ -61,8 +80,10 @@ public class Render implements EventExecuter {
         }
         text += "\n";
 
+        text += "This Frame: " + lastFrame + " ms";
+
         Screen screen =  FontCreator.createFont(text, 0x0, -1);
-        renderOn.drawScreen(0,0, screen.getScaledScreen(renderOn.getWidth() * 3 / 4, screen.getHeight()));
+        renderOn.drawScreen(0,0, screen.getScaledScreen(renderOn.getWidth() * 3 / 4, screen.getHeight() / 2));
     }
 
     public Screen getScreen() {
@@ -73,7 +94,7 @@ public class Render implements EventExecuter {
         GameListener l = parent.getListener();
         Vector3d location = tracer.getCamera().getPosition();
         Vector3d rotation = tracer.getCamera().getRotation();
-        if(!pause) {
+        if(!settings.getPause()) {
             if(l.isKeyDown(KeyEvent.VK_W)) {
                 tracer.getCamera().moveForward(.1);
             }
@@ -116,22 +137,6 @@ public class Render implements EventExecuter {
         }
     }
 
-    public boolean isPause() {
-        return pause;
-    }
-
-    public int getSamples() {
-        return this.averager.getAmount();
-    }
-
-    public void setSamples(int samples) {
-        this.averager.setAmount(samples);
-    }
-
-    public void setPause(boolean pause) {
-        this.pause = pause;
-    }
-
     @Override
     public void keyPressed(int code) {}
 
@@ -152,17 +157,11 @@ public class Render implements EventExecuter {
         }
     }
 
-    @Override
-    public void changeAttribute(String name, Object newVal) {
-        switch (name) {
-            case ATT_SAMPLES:
-                setSamples((int)newVal);
-                break;
-            case ATT_PAUSE:
-                setPause((boolean) newVal);
-                break;
-            default:
-                throw new RuntimeException("Unknown name: " + name);
-        }
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
+
+    public Settings getSettings() {
+        return settings;
     }
 }

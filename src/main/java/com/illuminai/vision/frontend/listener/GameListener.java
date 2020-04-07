@@ -12,8 +12,6 @@ import java.util.LinkedHashMap;
  * {@link #isKeyDown(int)}, {@link #isMouseDown()} and {@link #getMouseButton()} or {@link #getMouseX()} and {@link #getMouseY()} the methods for the current status.*/
 public class GameListener implements KeyListener, FocusListener, MouseListener, MouseMotionListener {
     private static final String EVENT_MOUSE_PRESSED = "EMP", EVENT_KEY_RELEASED = "EKR", EVENT_KEY_PRESSED = "EKP";
-    private static final String EVENT_CHANGE_ATTRIBUTE = "ECA";
-
 
     private final boolean[] keys = new boolean[65536];
 
@@ -133,12 +131,6 @@ public class GameListener implements KeyListener, FocusListener, MouseListener, 
         }
     }
 
-    public void changeAttribute(String name, Object newVal) {
-        synchronized (LOCK) {
-            queuedEvents.put(GameListener.EVENT_CHANGE_ATTRIBUTE, new Object[]{name, newVal});
-        }
-    }
-
     public void flushEvents() {
         synchronized (LOCK) {
             if (!queuedEvents.isEmpty()) {
@@ -165,11 +157,6 @@ public class GameListener implements KeyListener, FocusListener, MouseListener, 
                             for (EventExecuter ex : this.executers) {
                                 KeyEvent e = (KeyEvent) value;
                                 ex.keyReleased(e.getKeyCode());
-                            }
-                            break;
-                        case GameListener.EVENT_CHANGE_ATTRIBUTE:
-                            for (EventExecuter ex : this.executers) {
-                                ex.changeAttribute((String)((Object[])value)[0], ((Object[])value)[1]);
                             }
                             break;
                         default:

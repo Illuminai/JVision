@@ -5,5 +5,4 @@ public interface EventExecuter {
     void keyPressed(int code);
     void keyReleased(int code);
     void mouseClicked(int x, int y, int mouseButton);
-    void changeAttribute(String name, Object newVal);
 }

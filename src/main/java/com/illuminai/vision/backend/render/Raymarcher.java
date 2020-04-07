@@ -1,6 +1,5 @@
 package com.illuminai.vision.backend.render;
 
-import com.illuminai.vision.backend.math.Matrix3x3;
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.scene.Camera;
 import com.illuminai.vision.backend.scene.Scene;
@@ -20,15 +19,13 @@ public class Raymarcher {
                 new Vector3d(0, 0, 0));
     }
 
-    public Screen renderScene(double diversionAngle) {
+    public Screen renderScene(double maxDiversion) {
         Screen screen = new Screen(renderWidth, renderHeight);
-        Matrix3x3 diversionMatrix = Matrix3x3.createRotationMatrix(diversionAngle, diversionAngle, diversionAngle);
         for (int x = 0; x < renderWidth; x++) {
             for (int y = 0; y < renderHeight; y++) {
-                double u = (x - renderWidth / 2.0) / renderWidth;
-                double v = (y - renderHeight / 2.0) / renderHeight;
+                double u = ((x + maxDiversion * (.5 - Math.random())) - renderWidth / 2.0) / renderWidth;
+                double v = ((y + maxDiversion * (.5 - Math.random())) - renderHeight / 2.0) / renderHeight;
                 Ray ray = camera.getRay(u, v);
-                ray.setDirection(diversionMatrix.transformed(ray.getDirection()));
                 Color color = marchRay(ray);
                 screen.setPixel(x, y, color.getRGB());
             }

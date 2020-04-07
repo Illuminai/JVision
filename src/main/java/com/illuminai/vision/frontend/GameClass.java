@@ -1,5 +1,7 @@
 package com.illuminai.vision.frontend;
 
+import com.illuminai.vision.frontend.listener.SettingsFrame;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -12,6 +14,8 @@ public class GameClass extends JFrame {
     private static final long serialVersionUID = -624471870025862738L;
 
     private GameCanvas canvas;
+
+    private SettingsFrame settingsFrame;
 
     public static final int VERSION = 0;
     public static final String VERSION_NAME = "Alpha 0.0.1";
@@ -38,6 +42,9 @@ public class GameClass extends JFrame {
     }
 
     private void onExit() {
+        if(settingsFrame != null) {
+            settingsFrame.dispose();
+        }
         canvas.stop();
     }
 
@@ -45,10 +52,17 @@ public class GameClass extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         JMenu menuFile = new JMenu("File");
         JMenuItem itemPause = new JCheckBoxMenuItem("Pause");
-        itemPause.addActionListener((e) -> this.canvas.getListener().changeAttribute(Render.ATT_PAUSE, itemPause.isSelected()));
+        itemPause.addActionListener((e) -> this.canvas.getRender().getSettings().setPause(itemPause.isSelected()));
 
         JMenuItem itemSettings = new JMenuItem("Settings");
-        itemSettings.addActionListener((e) -> this.canvas.getListener().changeAttribute(Render.ATT_SAMPLES, Integer.valueOf(JOptionPane.showInputDialog("Input amount of samples"))));
+        itemSettings.addActionListener((e) -> {
+            if(settingsFrame == null || !settingsFrame.isDisplayable()) {
+                settingsFrame = new SettingsFrame(this.canvas.getRender());
+            } else {
+                settingsFrame.requestFocus();
+            }
+            //this.canvas.getListener().changeAttribute(Render.ATT_SAMPLES, Integer.valueOf(JOptionPane.showInputDialog("Input amount of samples")));
+        });
 
         JMenuItem itemExit = new JMenuItem("Exit");
         itemExit.addActionListener((e) -> {
