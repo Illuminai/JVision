@@ -11,6 +11,10 @@ public class Raymarcher {
     private Scene scene;
     private Camera camera;
 
+    private long[] outliner;
+
+    private double renderWidth = 800,renderHeight = 600;
+
     public Raymarcher(Scene scene) {
         this.scene = scene;
         camera = new Camera(new Vector3d(-5, 0, 0),
@@ -18,14 +22,16 @@ public class Raymarcher {
     }
 
     public Screen renderScene() {
-        Screen screen = new Screen(800, 600);
-        for (int x = 0; x < 800; x++) {
-            for (int y = 0; y < 600; y++) {
-                double u = (x - 400) / 800.0;
-                double v = (y - 300) / 600.0;
+        Screen screen = new Screen((int)renderWidth, (int)renderHeight);
+        outliner = new long[screen.getPixels().length];
+
+        for (int x = 0; x < renderWidth; x++) {
+            for (int y = 0; y < renderHeight; y++) {
+                double u = (x - renderWidth/2) / renderWidth;
+                double v = (y - renderHeight/2) / renderHeight;
                 Ray ray = camera.getRay(u, v);
 
-                Color color = marchRay(ray);
+                Color color = marchRay(ray, x, y);
                 screen.setPixel(x, y, color.getRGB());
             }
         }
@@ -33,7 +39,7 @@ public class Raymarcher {
     }
 
 
-    private Color marchRay(Ray ray) {
+    private Color marchRay(Ray ray, int x, int y) {
         Intersection intersection = getIntersection(ray);
         if (intersection == null) {
             Vector3d unitDirection = ray.getDirection().normalize();
@@ -42,6 +48,7 @@ public class Raymarcher {
             return new Color((int) (255 * colorVector.getX()), (int) (255 * colorVector.getY()), (int) (255 * (colorVector.getZ())));
         }
 
+        outliner[x + y * (int)renderWidth] = intersection.getMesh().getId();
         //normal direction algorithm
         Vector3d normal = intersection.getNormal();
         return new Color((int) (255 * (normal.getX() + 1)), (int) (255 * (normal.getY() + 1)), (int) (255 * (normal.getZ() + 1))).intensify(0.5);
@@ -93,5 +100,17 @@ public class Raymarcher {
 
     public Scene getScene() {
         return scene;
+    }
+
+    public long[] getOutliner() {
+        return outliner;
+    }
+
+    public double getRenderWidth() {
+        return renderWidth;
+    }
+
+    public double getRenderHeight() {
+        return renderHeight;
     }
 }

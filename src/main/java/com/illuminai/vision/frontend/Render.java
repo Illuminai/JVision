@@ -3,6 +3,7 @@ package com.illuminai.vision.frontend;
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.render.Raymarcher;
 import com.illuminai.vision.backend.scene.Scene;
+import com.illuminai.vision.backend.scene.shape.Mesh;
 import com.illuminai.vision.frontend.listener.GameListener;
 
 import java.awt.event.KeyEvent;
@@ -11,6 +12,8 @@ public class Render {
     private final Screen renderOn;
     private final GameCanvas parent;
     private Raymarcher tracer;
+
+    private Mesh subst;
 
     public Render(Screen renderOn, GameCanvas parent) {
         this.renderOn = renderOn;
@@ -22,6 +25,8 @@ public class Render {
         Scene scene = new Scene();
         scene.sceneInit();
         tracer = new Raymarcher(scene);
+
+        subst = tracer.getScene().getMeshes().get(0);
     }
 
     public void render() {
@@ -30,6 +35,24 @@ public class Render {
     }
 
     private void drawHUD() {
+        long[] outline = tracer.getOutliner();
+        int w = (int)tracer.getRenderWidth();
+        int h = (int)tracer.getRenderHeight();
+        //Do not count first and last pixel
+        //Makes checking more complicated because of bounds-checking
+        for(int x = 1; x < w-1; x++) {
+            for(int y = 1; y < h-1; y++) {
+                int i = x + y * w;
+                if(outline[i] == subst.getId()) {
+                    if(outline[i-1] != subst.getId() || outline[i+1] != subst.getId() || outline[i + w] != subst.getId() || outline[i - w] != subst.getId()) {
+                        renderOn.setPixel(i, 0xff00ff);
+                    }
+                }
+            }
+        }
+
+
+
         String text = "";
         text += "renderResolution: " + "TODO" + "\n";
         text += "displayResolution: " + this.parent.getWidth() + "/" + this.parent.getHeight() + "\n";
