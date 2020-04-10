@@ -11,7 +11,9 @@ public class Raymarcher {
     private Scene scene;
     private Camera camera;
 
-    private int renderWidth = 800, renderHeight = 600;
+    private long[] outliner;
+
+    private double renderWidth = 800,renderHeight = 600;
 
     public Raymarcher(Scene scene) {
         this.scene = scene;
@@ -20,20 +22,23 @@ public class Raymarcher {
     }
 
     public Screen renderScene(double maxDiversion) {
-        Screen screen = new Screen(renderWidth, renderHeight);
+        Screen screen = new Screen((int)renderWidth, (int)renderHeight);
+        outliner = new long[screen.getPixels().length];
+
         for (int x = 0; x < renderWidth; x++) {
             for (int y = 0; y < renderHeight; y++) {
                 double u = ((x + maxDiversion * (.5 - Math.random())) - renderWidth / 2.0) / renderWidth;
                 double v = ((y + maxDiversion * (.5 - Math.random())) - renderHeight / 2.0) / renderHeight;
                 Ray ray = camera.getRay(u, v);
-                Color color = marchRay(ray);
+
+                Color color = marchRay(ray, x, y);
                 screen.setPixel(x, y, color.getRGB());
             }
         }
         return screen;
     }
 
-    private Color marchRay(Ray ray) {
+    private Color marchRay(Ray ray, int x, int y) {
         Intersection intersection = getIntersection(ray);
         if (intersection == null) {
             Vector3d unitDirection = ray.getDirection().normalize();
@@ -42,6 +47,7 @@ public class Raymarcher {
             return new Color((int) (255 * colorVector.getX()), (int) (255 * colorVector.getY()), (int) (255 * (colorVector.getZ())));
         }
 
+        outliner[x + y * (int)renderWidth] = intersection.getMesh().getId();
         //normal direction algorithm
         Vector3d normal = intersection.getNormal();
         return new Color((int) (255 * (normal.getX() + 1)), (int) (255 * (normal.getY() + 1)), (int) (255 * (normal.getZ() + 1))).intensify(0.5);
@@ -96,11 +102,15 @@ public class Raymarcher {
         return scene;
     }
 
-    public int getRenderWidth() {
+    public long[] getOutliner() {
+        return outliner;
+    }
+
+    public double getRenderWidth() {
         return renderWidth;
     }
 
-    public int getRenderHeight() {
+    public double getRenderHeight() {
         return renderHeight;
     }
 }

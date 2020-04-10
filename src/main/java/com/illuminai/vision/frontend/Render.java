@@ -59,8 +59,9 @@ public class Render implements EventExecuter {
             lastFrame = System.currentTimeMillis();
 
             for(int i = 0; i < averager.getAmount(); i++) {
-                averager.getScreens()[i] = tracer.renderScene(Math.random());
+                averager.getScreens()[i] = tracer.renderScene(i == averager.getAmount() - 1 ? 0 :Math.random());
             }
+
 
             tempScreen.drawScreen(0,0, averager.calculateAverage());
             lastFrame = System.currentTimeMillis() - lastFrame;
@@ -70,6 +71,24 @@ public class Render implements EventExecuter {
     }
 
     private void drawHUD() {
+        if(selectedMesh != null){
+            long[] outline = tracer.getOutliner();
+            int w = (int)tracer.getRenderWidth();
+            int h = (int)tracer.getRenderHeight();
+            //Do not count first and last pixel
+            //Makes checking more complicated because of bounds-checking
+            for(int x = 1; x < w-1; x++) {
+                for(int y = 1; y < h-1; y++) {
+                    int i = x + y * w;
+                    if(outline[i] == selectedMesh.getId()) {
+                        if(outline[i-1] != selectedMesh.getId() || outline[i+1] != selectedMesh.getId() || outline[i + w] != selectedMesh.getId() || outline[i - w] != selectedMesh.getId()) {
+                            renderOn.setPixel(i, 0xff00ff);
+                        }
+                    }
+                }
+            }
+        }
+
         String text = "";
         text += "renderResolution:  " + this.tracer.getRenderWidth()+ "/" + this.tracer.getRenderHeight() + "\n";
         text += "displayResolution: " + this.parent.getWidth() + "/" + this.parent.getHeight() + "\n";
