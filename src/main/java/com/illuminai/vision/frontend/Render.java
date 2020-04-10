@@ -3,9 +3,9 @@ package com.illuminai.vision.frontend;
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.render.Intersection;
 import com.illuminai.vision.backend.render.Ray;
-import com.illuminai.vision.backend.render.Raymarcher;
+import com.illuminai.vision.backend.render.Raytracer;
 import com.illuminai.vision.backend.scene.Scene;
-import com.illuminai.vision.backend.scene.shape.Mesh;
+import com.illuminai.vision.backend.scene.shape.Shape;
 import com.illuminai.vision.frontend.listener.EventExecuter;
 import com.illuminai.vision.frontend.listener.GameListener;
 
@@ -16,10 +16,10 @@ public class Render implements EventExecuter {
     private final Screen renderOn, tempScreen;
     private ScreenAverager averager;
     private final GameCanvas parent;
-    private Raymarcher tracer;
+    private Raytracer tracer;
     private long lastFrame;
 
-    private Mesh selectedMesh;
+    private Shape selectedShape;
 
     private Settings settings;
 
@@ -38,7 +38,7 @@ public class Render implements EventExecuter {
     private void init() {
         Scene scene = new Scene();
         scene.sceneInit();
-        tracer = new Raymarcher(scene);
+        tracer = new Raytracer(scene);
     }
 
     private void initSettings() {
@@ -71,7 +71,7 @@ public class Render implements EventExecuter {
     }
 
     private void drawHUD() {
-        if(selectedMesh != null){
+        if(selectedShape != null){
             long[] outline = tracer.getOutliner();
             int w = (int)tracer.getRenderWidth();
             int h = (int)tracer.getRenderHeight();
@@ -80,8 +80,8 @@ public class Render implements EventExecuter {
             for(int x = 1; x < w-1; x++) {
                 for(int y = 1; y < h-1; y++) {
                     int i = x + y * w;
-                    if(outline[i] == selectedMesh.getId()) {
-                        if(outline[i-1] != selectedMesh.getId() || outline[i+1] != selectedMesh.getId() || outline[i + w] != selectedMesh.getId() || outline[i - w] != selectedMesh.getId()) {
+                    if(outline[i] == selectedShape.getId()) {
+                        if(outline[i-1] != selectedShape.getId() || outline[i+1] != selectedShape.getId() || outline[i + w] != selectedShape.getId() || outline[i - w] != selectedShape.getId()) {
                             renderOn.setPixel(i, 0xff00ff);
                         }
                     }
@@ -94,8 +94,8 @@ public class Render implements EventExecuter {
         text += "displayResolution: " + this.parent.getWidth() + "/" + this.parent.getHeight() + "\n";
 
         text += "selected: ";
-        if(selectedMesh != null) {
-            text += "\n  " + selectedMesh.getClass().getName();
+        if(selectedShape != null) {
+            text += "\n  " + selectedShape.getClass().getName();
         }
         text += "\n";
 
@@ -169,9 +169,9 @@ public class Render implements EventExecuter {
                     (y - tracer.getRenderHeight() / 2.0) / tracer.getRenderHeight() );
             Intersection intersection = tracer.getIntersection(ray);
             if(intersection != null) {
-                this.selectedMesh = intersection.getMesh();
+                this.selectedShape = intersection.getShape();
             } else {
-                this.selectedMesh = null;
+                this.selectedShape = null;
             }
         }
     }

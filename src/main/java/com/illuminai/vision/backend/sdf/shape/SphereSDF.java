@@ -3,12 +3,12 @@ package com.illuminai.vision.backend.sdf.shape;
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.sdf.SignedDistanceField;
 
-public class Sphere extends SignedDistanceField {
+public class SphereSDF extends SignedDistanceField {
 
     private Vector3d position;
     private double radius;
 
-    public Sphere(Vector3d position, double radius) {
+    public SphereSDF(Vector3d position, double radius) {
         this.position = position;
         this.radius = radius;
     }

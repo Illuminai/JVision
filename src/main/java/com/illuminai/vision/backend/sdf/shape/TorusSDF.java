@@ -3,12 +3,12 @@ package com.illuminai.vision.backend.sdf.shape;
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.sdf.SignedDistanceField;
 
-public class Torus extends SignedDistanceField {
+public class TorusSDF extends SignedDistanceField {
 
     private double minorRadius;
     private double majorRadius;
 
-    public Torus(double minorRadius, double majorRadius) {
+    public TorusSDF(double minorRadius, double majorRadius) {
         this.minorRadius = minorRadius;
         this.majorRadius = majorRadius;
     }
