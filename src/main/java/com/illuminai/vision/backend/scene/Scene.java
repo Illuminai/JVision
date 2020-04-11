@@ -1,7 +1,10 @@
 package com.illuminai.vision.backend.scene;
 
 import com.illuminai.vision.backend.math.Vector3d;
-import com.illuminai.vision.backend.scene.light.PointLight;
+import com.illuminai.vision.backend.render.Color;
+import com.illuminai.vision.backend.scene.light.DistantLight;
+import com.illuminai.vision.backend.scene.light.Light;
+import com.illuminai.vision.backend.scene.material.Material;
 import com.illuminai.vision.backend.scene.shape.Shape;
 import com.illuminai.vision.backend.scene.shape.Sphere;
 
@@ -18,7 +21,7 @@ public class Scene {
      */
     private List<Shape> shapes;
 
-    private List<PointLight> lights;
+    private List<Light> lights;
 
     /**
      * Constructs and initializes a Scene.
@@ -35,7 +38,7 @@ public class Scene {
         return shapes;
     }
 
-    public List<PointLight> getLights() {
+    public List<Light> getLights() {
         return lights;
     }
 
@@ -56,8 +59,11 @@ public class Scene {
         SphereSDF s3 = new SphereSDF(new Vector3d(.2,.2,.2), .2);
         SubtractionSDF sdf2 = new SubtractionSDF(s3, sdf);*/
 
-        shapes.add(new Sphere(new Vector3d(1, 1, 1), .2, 0xff00ff));
-        shapes.add(new Sphere(new Vector3d(2, 2, 2), .1, 0xff00ff));
-        lights.add(new PointLight(new Vector3d(0,0,3)));
+        shapes.add(new Sphere(new Vector3d(2, 0, 1), .1, new Material(0.18)));
+        shapes.add(new Sphere(new Vector3d(2, .5, 1), .2, new Material(0.18)));
+        shapes.add(new Sphere(new Vector3d(1.5, -0, 1.5), .3, new Material(0.18)));
+
+        lights.add(new DistantLight(new Color(1, 0, 1), 15, new Vector3d(2, 1, -3)));
+        //lights.add(new PointLight(new Color(1, 1, 1), 5, new Vector3d(2, -.2, 1)));
     }
 }

@@ -1,5 +1,7 @@
 package com.illuminai.vision.backend.render;
 
+import com.illuminai.vision.backend.math.Vector3d;
+
 /**
  * A color
  */
@@ -8,26 +10,17 @@ public class Color {
     /**
      * the red component
      */
-    private int red;
+    private double red;
 
     /**
      * the green component
      */
-    private int green;
+    private double green;
 
     /**
      * the blue component
      */
-    private int blue;
-
-    /**
-     * Constructs and initializes a Ray from the specified color
-     *
-     * @param color the color
-     */
-    public Color(int color) {
-        this((color & 0xFF0000) >> 16, (color & 0xFF00) >> 8, (color & 0xFF));
-    }
+    private double blue;
 
     /**
      * Constructs and initializes a Ray from the specified color components
@@ -36,76 +29,76 @@ public class Color {
      * @param green the green component
      * @param blue  the blue component
      */
-    public Color(int red, int green, int blue) {
+    public Color(double red, double green, double blue) {
         this.red = red;
         this.green = green;
         this.blue = blue;
     }
 
-    /**
-     * Adjust the intensity of the color
-     *
-     * @param intensity the intensity
-     * @return the color
-     */
-    public Color intensify(double intensity) {
-        float[] hsv = new float[3];
-        java.awt.Color.RGBtoHSB(red, green, blue, hsv);
-        hsv[2] = hsv[2] * (float) intensity;
-        int rgb = java.awt.Color.HSBtoRGB(hsv[0], hsv[1], hsv[2]);
+    public Color add(Vector3d color) {
+        double r = Math.min(1.0, red + color.getX());
+        double g = Math.min(1.0, green + color.getY());
+        double b = Math.min(1.0, blue + color.getZ());
+        return new Color(r, g, b);
+    }
 
-        return new Color(rgb);
+    public Color multiply(double scalar) {
+        //clamp instead of min
+        double r = red * scalar;
+        double g = green * scalar;
+        double b = blue * scalar;
+        return new Color(r, g, b);
     }
 
     /**
      * @return the color int
      */
     public int getRGB() {
-        int r = (red << 16) & 0xff0000;
-        int g = (green << 8) & 0x00ff00;
-        int b = blue & 0x0000ff;
+        int r = (((int) Math.round(red * 255)) << 16) & 0xff0000;
+        int g = (((int) Math.round(green * 255)) << 8) & 0x00ff00;
+        int b = ((int) Math.round(blue * 255)) & 0x0000ff;
         return r | g | b;
     }
 
     /**
      * @return the red component
      */
-    public int getRed() {
+    public double getRed() {
         return red;
     }
 
     /**
      * @param red the red component
      */
-    public void setRed(int red) {
+    public void setRed(double red) {
         this.red = red;
     }
 
     /**
      * @return the green component
      */
-    public int getGreen() {
+    public double getGreen() {
         return green;
     }
 
     /**
      * @param green the green component
      */
-    public void setGreen(int green) {
+    public void setGreen(double green) {
         this.green = green;
     }
 
     /**
      * @return the blue component
      */
-    public int getBlue() {
+    public double getBlue() {
         return blue;
     }
 
     /**
      * @param blue the blue component
      */
-    public void setBlue(int blue) {
+    public void setBlue(double blue) {
         this.blue = blue;
     }
 

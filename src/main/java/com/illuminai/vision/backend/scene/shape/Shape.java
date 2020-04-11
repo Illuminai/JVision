@@ -3,6 +3,7 @@ package com.illuminai.vision.backend.scene.shape;
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.render.Intersection;
 import com.illuminai.vision.backend.render.Ray;
+import com.illuminai.vision.backend.scene.material.Material;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -17,7 +18,7 @@ public abstract class Shape {
     /**
      * the color
      */
-    protected int color;
+    protected Material material;
 
     /**
      * the position
@@ -28,11 +29,11 @@ public abstract class Shape {
      * Constructs and initializes a Shape from the specified position and color.
      *
      * @param position the position
-     * @param color the color
+     * @param material the material
      */
-    public Shape(Vector3d position, int color) {
+    public Shape(Vector3d position, Material material) {
         this.position = position;
-        this.color = color;
+        this.material = material;
         this.id = counter.addAndGet(1);
     }
 
@@ -69,8 +70,8 @@ public abstract class Shape {
     /**
      * @return the color
      */
-    public int getColor() {
-        return color;
+    public Material getMaterial() {
+        return material;
     }
 
     public long getId() {
