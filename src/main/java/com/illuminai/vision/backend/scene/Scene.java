@@ -7,6 +7,7 @@ import com.illuminai.vision.backend.scene.light.Light;
 import com.illuminai.vision.backend.scene.material.Material;
 import com.illuminai.vision.backend.scene.shape.Shape;
 import com.illuminai.vision.backend.scene.shape.Sphere;
+import com.illuminai.vision.backend.scene.shape.Triangle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,9 +60,20 @@ public class Scene {
         SphereSDF s3 = new SphereSDF(new Vector3d(.2,.2,.2), .2);
         SubtractionSDF sdf2 = new SubtractionSDF(s3, sdf);*/
 
-        shapes.add(new Sphere(new Vector3d(2, 0, 1), .1, new Material(0.18)));
-        shapes.add(new Sphere(new Vector3d(2, .5, 1), .2, new Material(0.18)));
-        shapes.add(new Sphere(new Vector3d(1.5, -0, 1.5), .3, new Material(0.18)));
+        shapes.add(new Sphere(new Vector3d(5, 0, 0), .1, new Material(0.18)));
+
+        for(int x = 0; x < 7; x++) {
+            Vector3d p1 = new Vector3d(.1,0,0);
+            Vector3d p2 = new Vector3d(0,0,0);
+            Vector3d p3 = new Vector3d(0,0,.1);
+            Vector3d loc = new Vector3d((x - 3.) / 3+3,(x - 3.) / 3, (x - 3.) / 3);
+            shapes.add(new Triangle(loc.add(p1), loc.add(p2), loc.add(p3), new Material(.8)));
+            shapes.add(new Sphere(loc.add(p1), .01, new Material(0.18)));
+            shapes.add(new Sphere(loc.add(p2), .01, new Material(0.18)));
+            shapes.add(new Sphere(loc.add(p3), .01, new Material(0.18)));
+        }
+
+        shapes.add(new Triangle(new Vector3d(0,0,0),new Vector3d(1,0,0),new Vector3d(0,1,0), new Material(.8)));
 
         lights.add(new DistantLight(new Color(1, 0, 1), 15, new Vector3d(2, 1, -3)));
         //lights.add(new PointLight(new Color(1, 1, 1), 5, new Vector3d(2, -.2, 1)));
