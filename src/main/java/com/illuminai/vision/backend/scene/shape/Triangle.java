@@ -9,17 +9,18 @@ public class Triangle extends Shape {
     private Vector3d p2, p3;
     private Vector3d normal;
 
-    /**0: plane is parallel to yz-Plane
-     * 1: plane is parallel to xz-Plane
-     * 2: plane is parallel to xy-Plane*/
-    public byte mode;
     /** Creates a triangle containing these 3 points*/
     public Triangle(Vector3d p1, Vector3d p2, Vector3d p3, Material material) {
         super(p1, material);
         this.p2 = p2;
         this.p3 = p3;
         normal = p2.subtract(p1).cross(p3.subtract(p1)).normalize();
-        mode = (byte) (normal.getX() > 0.01 ? 0 : (normal.getY() > 0.01 ? 1 : 2));
+    }
+
+    @Override
+    public void setPosition(Vector3d p1) {
+        normal = p2.subtract(p1).cross(p3.subtract(p1)).normalize();
+        super.setPosition(position);
     }
 
     @Override
@@ -67,13 +68,14 @@ public class Triangle extends Shape {
                 d.getX()* p2.getY()* p3.getZ()));
 
         if(s + t <= 1 && s > 0 && t > 0) {
-            return new Intersection(ray, this, ray.getDirection().scale(-1), f);
+            return new Intersection(ray, this, normal, f);
         }
         return null;
     }
 
     @Override
     public boolean contains(Vector3d point) {
+        assert false;
         return false;
     }
 }
