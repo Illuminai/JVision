@@ -6,8 +6,8 @@ import com.illuminai.vision.backend.scene.light.Light;
 import com.illuminai.vision.backend.scene.light.PointLight;
 import com.illuminai.vision.backend.scene.material.DiffuseMaterial;
 import com.illuminai.vision.backend.scene.material.Material;
-import com.illuminai.vision.backend.scene.shape.Plane;
 import com.illuminai.vision.backend.scene.shape.Shape;
+import com.illuminai.vision.backend.scene.shape.Sphere;
 import com.illuminai.vision.backend.scene.shape.Triangle;
 
 import java.util.ArrayList;
@@ -53,21 +53,16 @@ public class Scene {
     }
 
     public void sceneInit() {
-        Material m = new DiffuseMaterial(1, new Color(1,1,1));
+        Material m = new DiffuseMaterial(1, new Color(1,0,1));
 
         Triangle t = new Triangle(
-                new Vector3d(1,0,0),
-                new Vector3d(1,1,0),new Vector3d(1,0,1),
+                new Vector3d(0,0,0),
+                new Vector3d(0,1,0),new Vector3d(0,0,1),
                 m);
 
-        Plane p = new Plane(new Vector3d(0,0,0),
-                m,
-                new Vector3d(0,0,1));
-
         shapes.add(t);
-        shapes.add(p);
-
+        shapes.add(new Sphere(new Vector3d(0,0,0),.1,m));
         lights.add(new PointLight(new Color(1, 1, 1),
-                15, new Vector3d(1,0,0)));
+                1500, new Vector3d(-1,0,0)));
     }
 }
