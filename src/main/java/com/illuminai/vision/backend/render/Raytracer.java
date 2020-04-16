@@ -23,7 +23,7 @@ public class Raytracer {
 
     public Raytracer(Scene scene) {
         this.scene = scene;
-        camera = new Camera(new Vector3d(-10, 0, 1), new Vector3d(0, 0, 0));
+        camera = new Camera(new Vector3d(-10, 0, 0), new Vector3d(0, 0, 0));
     }
 
     public Screen renderScene(double maxDiversion) {

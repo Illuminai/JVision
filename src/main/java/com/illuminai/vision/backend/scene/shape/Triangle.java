@@ -27,25 +27,27 @@ public class Triangle extends Shape {
     public Intersection getIntersection(Ray ray) {
         /*
         * Mathematica code:
-        r = {ox, oy, oz} + d*{dx, dy, dz};
-        p1 = {p1x, p1y, p1z};
-        p2 = {p2x, p2y, p2z};
-        p3 = {p3x, p3y, p3z};
-           Solve[r == p1 + t*(p2 - p1) + s*(p3 - p1), {d, s, t}]
+        (*Clear["Global`*"];*)
+   p1x = 5; p1y = 4; p1z = 3;
+p2x = 1; p2y = 4; p2z = 1;
+p3x = 1; p3y = 1; p3z = 1;
+ox = 3; oy = 3; oz = 0;
+dx = 0; dy = 0; dz = 1;
+
+o = {ox, oy, oz};
+dr = {dx, dy, dz};
+p1 = {p1x, p1y, p1z};
+p2 = {p2x, p2y, p2z};
+p3 = {p3x, p3y, p3z};
+
+Graphics3D[{Triangle[{p1, p2, p3}], Arrow[{o, o + dr}], Yellow,
+  Arrow[{p1, p2}], Green, Arrow[{{p1, p3}}]}]
+Solve[o + d*dr == p1 + t*(p2 - p1) + s*(p3 - p1), {d, s, t}]
         * */
 
         Vector3d p1 = getPosition();
         Vector3d o = ray.getOrigin();
         Vector3d d = ray.getDirection();
-        double f = -((((o.getZ() - p1.getZ()) * (p1.getX() - p2.getX()) - (o.getX() - p1.getX()) * (p1.getZ() - p2.getZ())) * (-p1.getY()* p2.getX() +
-                p1.getX() *p2.getY() + p1.getY() *p3.getX() - p2.getY()* p3.getX() - p1.getX()* p3.getY() +
-                p2.getX() *p3.getY()) - ((o.getY() - p1.getY())* (p1.getX() - p2.getX()) - (o.getX() - p1.getX()) *(p1.getY() -
-                p2.getY())) *(-(p1.getZ() - p2.getZ())* (p1.getX() - p3.getX()) + (p1.getX() - p2.getX())* (p1.getZ() -
-                p3.getZ())))/((d.getZ()* (p1.getX() - p2.getX()) - d.getX() * (p1.getZ() - p2.getZ())) *(-p1.getY()* p2.getX() +
-                p1.getX() * p2.getY() + p1.getY() *  p3.getX() - p2.getY() *p3.getX() - p1.getX() *p3.getY() +
-                p2.getX()* p3.getY()) - (d.getY() *(p1.getX() - p2.getX()) -
-                d.getX()* (p1.getY() - p2.getY())) *(-(p1.getZ() - p2.getZ()) * (p1.getX() - p3.getX()) + (p1.getX() -
-                p2.getX())* (p1.getZ() - p3.getZ()))));
 
         double s = -((d.getZ() *o.getY() *p1.getX() - d.getY()* o.getZ() *p1.getX() -
                 d.getZ()* o.getX() * p1.getY() + d.getX()* o.getZ()* p1.getY() + d.getY()* o.getX()* p1.getZ() - d.getX()* o.getY()* p1.getZ() - d.getZ()* o.getY()* p2.getX() +
@@ -67,10 +69,15 @@ public class Triangle extends Shape {
                 d.getX()* p2.getZ()* p3.getY() - d.getY()* p1.getX()* p3.getZ() + d.getX()* p1.getY()* p3.getZ() + d.getY()* p2.getX()* p3.getZ() -
                 d.getX()* p2.getY()* p3.getZ()));
 
+        double f = o.subtract(p1.add(p2.subtract(p1).scale(t)).add(p3.subtract(p1).scale(s))).length();
+/*
         if(s + t <= 1 && s > 0 && t > 0) {
-            return new Intersection(ray, this, normal, f);
+            return new Intersection(ray, this, normal.scale(1), f);
         }
-        return null;
+ */
+        return new Intersection(ray, this, normal, f);
+
+        //return null;
     }
 
     @Override
