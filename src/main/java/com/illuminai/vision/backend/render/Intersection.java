@@ -49,14 +49,6 @@ public class Intersection {
     }
 
     /**
-     * @return the reflection ray
-     */
-    public Ray getReflectionRay() {
-        Vector3d incoming = ray.getDirection().normalize();
-        return new Ray(point, incoming.subtract(normal.scale(2.0 * incoming.dot(normal))));
-    }
-
-    /**
      * @return the ray
      */
     public Ray getRay() {

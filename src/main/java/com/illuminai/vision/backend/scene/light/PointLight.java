@@ -14,12 +14,12 @@ public class PointLight extends Light {
 
     @Override
     public Vector3d getDirection(Vector3d point) {
-        return position.subtract(point).normalize();
+        return point.subtract(position).normalize();
     }
 
     @Override
     public Color getLightIntensity(Vector3d point) {
-        double r2 = position.subtract(point).length();
+        double r2 = point.subtract(position).length();
         return color.multiply(intensity).multiply(1.0 / 4.0 * Math.PI * r2);
     }
 

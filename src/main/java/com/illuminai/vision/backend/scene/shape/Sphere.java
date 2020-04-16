@@ -1,8 +1,10 @@
 package com.illuminai.vision.backend.scene.shape;
 
 import com.illuminai.vision.backend.math.Vector3d;
+import com.illuminai.vision.backend.render.Color;
 import com.illuminai.vision.backend.render.Intersection;
 import com.illuminai.vision.backend.render.Ray;
+import com.illuminai.vision.backend.scene.material.DiffuseMaterial;
 import com.illuminai.vision.backend.scene.material.Material;
 
 /**
@@ -21,7 +23,7 @@ public class Sphere extends Shape {
      * @param position the position
      */
     public Sphere(Vector3d position) {
-        this(position, 1.0, new Material(0.18));
+        this(position, 1.0, new DiffuseMaterial(0.18, new Color(0, 0, 0)));
     }
 
     /**
