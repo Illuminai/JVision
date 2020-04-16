@@ -36,9 +36,16 @@ public class Color {
     }
 
     public Color add(Vector3d color) {
-        double r = Math.min(1.0, red + color.getX());
-        double g = Math.min(1.0, green + color.getY());
-        double b = Math.min(1.0, blue + color.getZ());
+        double r = red + color.getX();
+        double g = green + color.getY();
+        double b = blue + color.getZ();
+        return new Color(r, g, b);
+    }
+
+    public Color add(Color color) {
+        double r = red + color.getRed();
+        double g = green + color.getGreen();
+        double b = blue + color.getBlue();
         return new Color(r, g, b);
     }
 

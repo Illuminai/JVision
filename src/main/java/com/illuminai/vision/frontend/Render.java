@@ -73,7 +73,7 @@ public class Render implements EventExecuter {
     }
 
     private void drawHUD() {
-        /*if (selectedShape != null) {
+        if (selectedShape != null) {
             long[] outline = tracer.getOutliner();
             int w = (int) tracer.getRenderWidth();
             int h = (int) tracer.getRenderHeight();
@@ -89,7 +89,7 @@ public class Render implements EventExecuter {
                     }
                 }
             }
-        }*/
+        }
 
         String text = "";
         text += "renderResolution:  " + this.tracer.getRenderWidth() + "/" + this.tracer.getRenderHeight() + "\n";
