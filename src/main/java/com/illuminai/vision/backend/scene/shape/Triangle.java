@@ -8,12 +8,18 @@ import com.illuminai.vision.backend.scene.material.Material;
 public class Triangle extends Plane {
     private Vector3d p2, p3;
 
-    /** Creates a triangle containing these 3 points*/
+    /** Creates a triangle containing these 3 points<br>
+     * The points should be given in counterclockwise order (for the normal)*/
     public Triangle(Vector3d p1, Vector3d p2, Vector3d p3, Material material) {
-        super(p1, material, p2.subtract(p1).cross(p3.subtract(p1)).scale(-1).normalize());
+        super(p1, material, p1.subtract(p2).cross(p1.subtract(p3)));
         this.p2 = p2;
         this.p3 = p3;
     }
+
+    public void prepare() {
+        setNormal(getPosition().subtract(p2).cross(p3.subtract(getPosition())));
+    }
+
 
     @Override
     public Intersection getIntersection(Ray ray) {
@@ -45,5 +51,21 @@ public class Triangle extends Plane {
     public boolean contains(Vector3d point) {
         assert false;
         return false;
+    }
+
+    public Vector3d getP2() {
+        return p2;
+    }
+
+    public void setP2(Vector3d p2) {
+        this.p2 = p2;
+    }
+
+    public Vector3d getP3() {
+        return p3;
+    }
+
+    public void setP3(Vector3d p3) {
+        this.p3 = p3;
     }
 }

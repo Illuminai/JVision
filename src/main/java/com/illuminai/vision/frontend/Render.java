@@ -1,5 +1,6 @@
 package com.illuminai.vision.frontend;
 
+import com.illuminai.vision.backend.math.Matrix3x3;
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.render.Intersection;
 import com.illuminai.vision.backend.render.Ray;
@@ -23,9 +24,48 @@ public class Render implements EventExecuter {
 
     private Settings settings;
 
+    private FixRotator rot;
+
+    private class FixRotator {
+        double angleZ;
+        double angleY;
+        double distance;
+        FixRotator() {
+            angleZ = 0;
+            angleY = 0;
+            distance = 1;
+        }
+
+        void apply() {
+            if(selectedShape == null) {
+                return;
+            }
+            Vector3d pos = new Vector3d(-distance,0,0);
+
+            pos = Matrix3x3.createRotationMatrix('y', angleY).transformed(pos);
+            pos = Matrix3x3.createRotationMatrix('z', angleZ).transformed(pos);
+
+            Render.this.tracer.getCamera().setRotation(new Vector3d(0, (angleY > Math.PI) ? angleY-Math.PI : (angleY < -Math.PI ? angleY + Math.PI: angleY), angleZ));
+            Render.this.tracer.getCamera().setPosition(selectedShape.getPosition().add(pos));
+        }
+
+        void addZ(double angle) {
+            this.angleZ += angle;
+        }
+
+        void addY(double angle) {
+            this.angleY += angle;
+        }
+
+        void factorDistance(double f) {
+            distance *= f;
+        }
+    }
+
     public Render(Screen renderOn, GameCanvas parent) {
         this.renderOn = renderOn;
         this.settings = new Settings();
+        rot = null;
         initSettings();
 
         this.tempScreen = new Screen(renderOn.getWidth(), renderOn.getHeight());
@@ -154,12 +194,44 @@ public class Render implements EventExecuter {
                 rotation.setX(rotation.getX() + .05);
             }
             tracer.getCamera().setRotation(rotation);
+
+
+            if(this.rot != null) {
+                if (l.isKeyDown(KeyEvent.VK_W)) {
+                    rot.addY(-.05);
+                }
+                if (l.isKeyDown(KeyEvent.VK_S)) {
+                    rot.addY(.05);
+                }
+                if (l.isKeyDown(KeyEvent.VK_D)) {
+                    rot.addZ(.05);
+                }
+                if (l.isKeyDown(KeyEvent.VK_A)) {
+                    rot.addZ(-.05);
+                }
+                if (l.isKeyDown(KeyEvent.VK_UP)) {
+                    rot.factorDistance(1/1.1);
+                }
+                if (l.isKeyDown(KeyEvent.VK_DOWN)) {
+                    rot.factorDistance(1.1);
+                }
+
+                rot.apply();
+            }
             tracer.getScene().tick();
+
         }
     }
 
     @Override
     public void keyPressed(int code) {
+        if(code == KeyEvent.VK_R) {
+            if(this.rot == null) {
+                rot = new FixRotator();
+            } else {
+                this.rot = null;
+            }
+        }
     }
 
     @Override

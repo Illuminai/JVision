@@ -53,6 +53,9 @@ public abstract class Shape {
      */
     public abstract boolean contains(Vector3d point);
 
+    /** Prepares the shape to be rendered. For example, the normal of a triangle could be recalculated after e vertex was changed*/
+    public abstract void prepare();
+
     /**
      * @param position the position
      */

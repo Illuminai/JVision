@@ -83,6 +83,11 @@ public class Sphere extends Shape {
         return point.subtract(position).length() < radius;
     }
 
+    @Override
+    public void prepare() {
+        //Nothing to do
+    }
+
     /**
      * @return the radius
      */

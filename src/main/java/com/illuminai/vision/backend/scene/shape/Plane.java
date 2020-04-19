@@ -27,8 +27,22 @@ public class Plane extends Shape {
         return null;
     }
 
+    public Vector3d getNormal() {
+        return normal;
+    }
+
+    public void setNormal(Vector3d normal) {
+        this.normal = normal.normalize();
+    }
+
+    @Override
+    public void prepare() {
+        //Nothing to prepare
+    }
+
     @Override
     public boolean contains(Vector3d point) {
+        assert false;
         return false;
     }
 }
