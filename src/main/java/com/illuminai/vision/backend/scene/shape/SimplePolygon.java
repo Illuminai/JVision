@@ -12,12 +12,10 @@ public class SimplePolygon extends Shape {
     public SimplePolygon(Material material,
                          Vector3d[] points, int[][] faces) {
         super(points[0], material);
-        this.faces = new Triangle[2 * faces.length];
+        this.faces = new Triangle[faces.length];
 
         for(int i = 0; i < faces.length; i++) {
             this.faces[i] = new Triangle(points[faces[i][0]], points[faces[i][1]], points[faces[i][2]], material);
-            this.faces[i + faces.length] = new Triangle(points[faces[i][0]], points[faces[i][2]], points[faces[i][1]], material);
-
         }
     }
 
