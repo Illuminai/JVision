@@ -57,10 +57,6 @@ public class Scene {
     public void sceneInit() {
         Material m = new DiffuseMaterial(1, new Color(1,1,1));
 
-
-        //shapes.add(new Sphere(new Vector3d(0,0,0),.1,m));
-        //shapes.add(new Sphere(new Vector3d(1,1,1),.1,m));
-
         SimplePolygon p = new SimplePolygon(m,new Vector3d[]{
             new Vector3d(0,0,0),
                 new Vector3d(.1,0,0),
@@ -75,18 +71,9 @@ public class Scene {
             });
         shapes.add(p);
 
-        lights.add(new PointLight(new Color(1, 1, 1),
-                15, new Vector3d(-1,0,0)));
-        lights.add(new PointLight(new Color(1, 1, 1),
-                15, new Vector3d(1,0,0)));
-        lights.add(new PointLight(new Color(1, 1, 1),
-                15, new Vector3d(0,-1,0)));
-        lights.add(new PointLight(new Color(1, 1, 1),
-                15, new Vector3d(0,1,0)));
-        lights.add(new PointLight(new Color(1, 1, 1),
-                15, new Vector3d(0,0,-1)));
-        lights.add(new PointLight(new Color(1, 1, 1),
-                15, new Vector3d(0,0,1)));
+        lights.add(new PointLight(new Color(1,1,1),10,new Vector3d(0,0,10)));
+        lights.add(new PointLight(new Color(1,1,1),10,new Vector3d(-1,-5,-3)));
+
     }
 
     public void prepare() {

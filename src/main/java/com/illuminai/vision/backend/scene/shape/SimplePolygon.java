@@ -34,6 +34,9 @@ public class SimplePolygon extends Shape {
                 }
             }
         }
+        if(i != null) {
+            i.setShape(this);
+        }
         return i;
     }
 

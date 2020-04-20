@@ -17,7 +17,7 @@ public class Plane extends Shape {
     @Override
     public Intersection getIntersection(Ray ray) {
         double denominator = normal.scale(-1.0).dot(ray.getDirection());
-        if (denominator > 1e-6 || denominator < -1e-6) { // epsilon bias
+        if (denominator > 1e-6) { // epsilon bias
             Vector3d pointTo = position.subtract(ray.getOrigin());
             double time = pointTo.dot(normal.scale(-1.0)) / denominator;
             if (time >= 0) {
