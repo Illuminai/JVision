@@ -11,6 +11,8 @@ import java.util.LinkedHashMap;
  *  (careful tough, as the events are registered and only given to the executers once {@link #flushEvents()} is called; this means that it is not real-time), or one can check the
  * {@link #isKeyDown(int)}, {@link #isMouseDown()} and {@link #getMouseButton()} or {@link #getMouseX()} and {@link #getMouseY()} the methods for the current status.*/
 public class GameListener implements KeyListener, FocusListener, MouseListener, MouseMotionListener {
+    public static final int MOD_SHIFT = 0x1, MOD_CTRL = 0x2, MOD_ALT = 0x4;
+
     private static final String EVENT_MOUSE_PRESSED = "EMP", EVENT_KEY_RELEASED = "EKR", EVENT_KEY_PRESSED = "EKP";
 
     private final boolean[] keys = new boolean[65536];
@@ -129,6 +131,13 @@ public class GameListener implements KeyListener, FocusListener, MouseListener, 
             mouseX = event.getX();
             mouseY = event.getY();
         }
+    }
+
+    /** Returns true if all modifiers are being pressed */
+    public boolean checkModifiers(int modifiers) {
+        return ((modifiers & MOD_SHIFT) == 0) != isKeyDown(KeyEvent.VK_SHIFT) &&
+                ((modifiers & MOD_CTRL) == 0) != isKeyDown(KeyEvent.VK_CONTROL) &&
+                ((modifiers & MOD_ALT) == 0) != isKeyDown(KeyEvent.VK_ALT);
     }
 
     public void flushEvents() {

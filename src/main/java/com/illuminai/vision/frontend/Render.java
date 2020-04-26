@@ -1,12 +1,15 @@
 package com.illuminai.vision.frontend;
 
 import com.illuminai.vision.backend.math.Matrix3x3;
+import com.illuminai.vision.backend.math.Vector;
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.render.Intersection;
 import com.illuminai.vision.backend.render.Ray;
 import com.illuminai.vision.backend.render.Raytracer;
+import com.illuminai.vision.backend.scene.Camera;
 import com.illuminai.vision.backend.scene.Scene;
 import com.illuminai.vision.backend.scene.shape.Shape;
+import com.illuminai.vision.frontend.actor.Actor;
 import com.illuminai.vision.frontend.listener.EventExecuter;
 import com.illuminai.vision.frontend.listener.GameListener;
 
@@ -20,11 +23,15 @@ public class Render implements EventExecuter {
     private Raytracer tracer;
     private long lastFrame;
 
+    private Actor.Mode mode;
+
     private Shape selectedShape;
 
     private Settings settings;
 
     private FixRotator rot;
+
+    private Actor actor;
 
     private class FixRotator {
         double angleZ;
@@ -65,13 +72,18 @@ public class Render implements EventExecuter {
     public Render(Screen renderOn, GameCanvas parent) {
         this.renderOn = renderOn;
         this.settings = new Settings();
-        rot = null;
         initSettings();
+
+        rot = null;
+        this.mode = Actor.MODE_DEFAULT;
 
         this.tempScreen = new Screen(renderOn.getWidth(), renderOn.getHeight());
         this.parent = parent;
         this.parent.getListener().addExecuter(this);
         this.averager = new ScreenAverager(settings.getSamples(), renderOn.getWidth(), renderOn.getHeight());
+
+        this.actor = new Actor(this);
+
         init();
     }
 
@@ -153,9 +165,9 @@ public class Render implements EventExecuter {
 
     public void tick() {
         GameListener l = parent.getListener();
-        Vector3d location = tracer.getCamera().getPosition();
         Vector3d rotation = tracer.getCamera().getRotation();
         if (!settings.getPause()) {
+            /*
             if (l.isKeyDown(KeyEvent.VK_W)) {
                 tracer.getCamera().moveForward(.1);
             }
@@ -174,6 +186,7 @@ public class Render implements EventExecuter {
             if (l.isKeyDown(KeyEvent.VK_SHIFT)) {
                 tracer.getCamera().moveUpwards(-.1);
             }
+            */
 
             if (l.isKeyDown(KeyEvent.VK_L)) {
                 rotation.setZ(rotation.getZ() - .05);
@@ -221,6 +234,48 @@ public class Render implements EventExecuter {
             tracer.getScene().tick();
 
         }
+
+        actor.tick();
+    }
+
+    public GameListener getListener() {
+        return parent.getListener();
+    }
+
+    public void executeCommand(String command) {
+        String[] split = command.split(" ");
+        Camera camera = this.tracer.getCamera();
+        Vector3d rotation = this.tracer.getCamera().getRotation();
+        Vector3d position = this.tracer.getCamera().getPosition();
+        switch (split[0]) {
+            case "move":
+                double d = .1;
+                if(split.length == 3) {
+                    d = Double.parseDouble(split[2]);
+                }
+                switch (split[1]) {
+                    case "+f": camera.moveForward(d); break;
+                    case "-f": camera.moveForward(-d); break;
+                    case "+s": camera.moveSideward(d); break;
+                    case "-s": camera.moveSideward(-d); break;
+                    case "+u": camera.moveUpwards(d); break;
+                    case "-u": camera.moveUpwards(-d); break;
+                    default: throw new RuntimeException("Invalid parameter: " + split[1]);
+                }
+                break;
+
+            case "rotate":
+            case "mode":
+            case "exit":
+            case "save": break;
+            default:
+                throw new RuntimeException("Unknown command:" + split[0]);
+        }
+        //assert false: command;
+    }
+
+    public void setMode(Actor.Mode mode) {
+        this.mode = mode;
     }
 
     @Override

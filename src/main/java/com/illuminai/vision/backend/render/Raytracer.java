@@ -28,6 +28,7 @@ public class Raytracer {
 
     public Screen renderScene(double maxDiversion) {
         scene.prepare();
+        camera.prepare();
 
         Screen screen = new Screen((int) renderWidth, (int) renderHeight);
         outliner = new long[screen.getPixels().length];
