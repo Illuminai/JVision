@@ -16,7 +16,7 @@ import com.illuminai.vision.frontend.listener.GameListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public class Render implements EventExecuter {
+public class Render {
     private final Screen renderOn, tempScreen;
     private ScreenAverager averager;
     private final GameCanvas parent;
@@ -33,56 +33,19 @@ public class Render implements EventExecuter {
 
     private Actor actor;
 
-    private class FixRotator {
-        double angleZ;
-        double angleY;
-        double distance;
-        FixRotator() {
-            angleZ = 0;
-            angleY = 0;
-            distance = 1;
-        }
-
-        void apply() {
-            if(selectedShape == null) {
-                return;
-            }
-            Vector3d pos = new Vector3d(-distance,0,0);
-
-            pos = Matrix3x3.createRotationMatrix('y', angleY).transformed(pos);
-            pos = Matrix3x3.createRotationMatrix('z', angleZ).transformed(pos);
-
-            Render.this.tracer.getCamera().setRotation(new Vector3d(0, (angleY > Math.PI) ? angleY-Math.PI : (angleY < -Math.PI ? angleY + Math.PI: angleY), angleZ));
-            Render.this.tracer.getCamera().setPosition(selectedShape.getPosition().add(pos));
-        }
-
-        void addZ(double angle) {
-            this.angleZ += angle;
-        }
-
-        void addY(double angle) {
-            this.angleY += angle;
-        }
-
-        void factorDistance(double f) {
-            distance *= f;
-        }
-    }
-
     public Render(Screen renderOn, GameCanvas parent) {
         this.renderOn = renderOn;
+        this.tempScreen = new Screen(renderOn.getWidth(), renderOn.getHeight());
+        this.parent = parent;
         this.settings = new Settings();
         initSettings();
 
         rot = null;
-        this.mode = Actor.MODE_DEFAULT;
-
-        this.tempScreen = new Screen(renderOn.getWidth(), renderOn.getHeight());
-        this.parent = parent;
-        this.parent.getListener().addExecuter(this);
-        this.averager = new ScreenAverager(settings.getSamples(), renderOn.getWidth(), renderOn.getHeight());
-
+        this.mode = Actor.Mode.DEFAULT;
         this.actor = new Actor(this);
+
+        this.parent.getListener().addExecuter(actor);
+        this.averager = new ScreenAverager(settings.getSamples(), renderOn.getWidth(), renderOn.getHeight());
 
         init();
     }
@@ -152,7 +115,7 @@ public class Render implements EventExecuter {
             text += "\n  " + selectedShape.getClass().getName();
         }
         text += "\n";
-
+        text += "Mode: " + getMode().name() + "\n";
         text += "This Frame: " + lastFrame + " ms";
 
         Screen screen = FontCreator.createFont(text, 0x0, -1);
@@ -165,70 +128,8 @@ public class Render implements EventExecuter {
 
     public void tick() {
         GameListener l = parent.getListener();
-        Vector3d rotation = tracer.getCamera().getRotation();
         if (!settings.getPause()) {
-            /*
-            if (l.isKeyDown(KeyEvent.VK_W)) {
-                tracer.getCamera().moveForward(.1);
-            }
-            if (l.isKeyDown(KeyEvent.VK_S)) {
-                tracer.getCamera().moveForward(-.1);
-            }
-            if (l.isKeyDown(KeyEvent.VK_D)) {
-                tracer.getCamera().moveSideward(-.1);
-            }
-            if (l.isKeyDown(KeyEvent.VK_A)) {
-                tracer.getCamera().moveSideward(.1);
-            }
-            if (l.isKeyDown(KeyEvent.VK_SPACE)) {
-                tracer.getCamera().moveUpwards(.1);
-            }
-            if (l.isKeyDown(KeyEvent.VK_SHIFT)) {
-                tracer.getCamera().moveUpwards(-.1);
-            }
-            */
-
-            if (l.isKeyDown(KeyEvent.VK_L)) {
-                rotation.setZ(rotation.getZ() - .05);
-            }
-            if (l.isKeyDown(KeyEvent.VK_J)) {
-                rotation.setZ(rotation.getZ() + .05);
-            }
-            if (l.isKeyDown(KeyEvent.VK_I)) {
-                rotation.setY(rotation.getY() + .05);
-            }
-            if (l.isKeyDown(KeyEvent.VK_K)) {
-                rotation.setY(rotation.getY() - .05);
-            }
-            if (l.isKeyDown(KeyEvent.VK_U)) {
-                rotation.setX(rotation.getX() - .05);
-            }
-            if (l.isKeyDown(KeyEvent.VK_O)) {
-                rotation.setX(rotation.getX() + .05);
-            }
-            tracer.getCamera().setRotation(rotation);
-
-
             if(this.rot != null) {
-                if (l.isKeyDown(KeyEvent.VK_W)) {
-                    rot.addY(-.05);
-                }
-                if (l.isKeyDown(KeyEvent.VK_S)) {
-                    rot.addY(.05);
-                }
-                if (l.isKeyDown(KeyEvent.VK_D)) {
-                    rot.addZ(.05);
-                }
-                if (l.isKeyDown(KeyEvent.VK_A)) {
-                    rot.addZ(-.05);
-                }
-                if (l.isKeyDown(KeyEvent.VK_UP)) {
-                    rot.factorDistance(1/1.1);
-                }
-                if (l.isKeyDown(KeyEvent.VK_DOWN)) {
-                    rot.factorDistance(1.1);
-                }
-
                 rot.apply();
             }
             tracer.getScene().tick();
@@ -246,64 +147,99 @@ public class Render implements EventExecuter {
         String[] split = command.split(" ");
         Camera camera = this.tracer.getCamera();
         Vector3d rotation = this.tracer.getCamera().getRotation();
-        Vector3d position = this.tracer.getCamera().getPosition();
+        double distance;
+        double angle;
         switch (split[0]) {
             case "move":
-                double d = .1;
+                distance = .1;
                 if(split.length == 3) {
-                    d = Double.parseDouble(split[2]);
+                    distance = Double.parseDouble(split[2]);
                 }
                 switch (split[1]) {
-                    case "+f": camera.moveForward(d); break;
-                    case "-f": camera.moveForward(-d); break;
-                    case "+s": camera.moveSideward(d); break;
-                    case "-s": camera.moveSideward(-d); break;
-                    case "+u": camera.moveUpwards(d); break;
-                    case "-u": camera.moveUpwards(-d); break;
+                    case "+f": camera.moveForward(distance); break;
+                    case "-f": camera.moveForward(-distance); break;
+                    case "+s": camera.moveSideward(distance); break;
+                    case "-s": camera.moveSideward(-distance); break;
+                    case "+u": camera.moveUpwards(distance); break;
+                    case "-u": camera.moveUpwards(-distance); break;
                     default: throw new RuntimeException("Invalid parameter: " + split[1]);
                 }
                 break;
-
             case "rotate":
+                angle =.5;
+                if(split.length == 3) {
+                    angle = Double.parseDouble(split[2]);
+                }
+                switch(split[1]) {
+                    case "+x": rotation.setX(rotation.getX() + angle); break;
+                    case "-x": rotation.setX(rotation.getX() - angle); break;
+                    case "+y": rotation.setY(rotation.getY() + angle); break;
+                    case "-y": rotation.setY(rotation.getY() - angle); break;
+                    case "+z": rotation.setZ(rotation.getZ() + angle); break;
+                    case "-z": rotation.setZ(rotation.getZ() - angle); break;
+                    default: throw new RuntimeException("Invalid parameter: " + split[1]);
+                }
+                break;
+            case "rotator":
+                angle = .1;
+                assert rot != null;
+
+                if(split.length == 3) {
+                    angle = Double.parseDouble(split[2]);
+                }
+                switch (split[1]) {
+                    case "+z": rot.addZ(angle); break;
+                    case "-z": rot.addZ(-angle); break;
+                    case "+y": rot.addY(angle); break;
+                    case "-y": rot.addY(-angle); break;
+                    case "+d": rot.factorDistance(1.1); break;
+                    case "-d": rot.factorDistance(1/1.1); break;
+                }
             case "mode":
             case "exit":
             case "save": break;
             default:
                 throw new RuntimeException("Unknown command:" + split[0]);
         }
-        //assert false: command;
     }
 
     public void setMode(Actor.Mode mode) {
-        this.mode = mode;
+        if(this.mode != mode) {
+            this.mode = mode;
+            onModeEntry(mode);
+        }
+
     }
 
-    @Override
-    public void keyPressed(int code) {
-        if(code == KeyEvent.VK_R) {
-            if(this.rot == null) {
+    private void onModeEntry(Actor.Mode mode) {
+        switch (mode) {
+            case DEFAULT:
+                rot = null;
+                break;
+            case ROTATOR:
                 rot = new FixRotator();
-            } else {
-                this.rot = null;
-            }
+                break;
+            default: throw new RuntimeException("Unknown mode: " + mode.name());
         }
     }
 
-    @Override
-    public void keyReleased(int code) {
+    public Actor.Mode getMode() {
+        return mode;
     }
 
-    @Override
     public void mouseClicked(int x, int y, int mouseButton) {
         if (mouseButton == MouseEvent.BUTTON1) {
-            Ray ray = tracer.getCamera().getRay((x - tracer.getRenderWidth() / 2.0) / tracer.getRenderWidth(),
-                    (y - tracer.getRenderHeight() / 2.0) / tracer.getRenderHeight());
-            Intersection intersection = tracer.getIntersection(ray);
-            if (intersection != null) {
-                this.selectedShape = intersection.getShape();
-            } else {
-                this.selectedShape = null;
-            }
+            this.selectedShape = getShapeThroughRay(x,y);
+        }
+    }
+
+    public Shape getShapeThroughRay(double x, double y) {
+        Intersection i = tracer.getIntersection(tracer.getCamera().getRay((x - tracer.getRenderWidth() / 2.0) / tracer.getRenderWidth(),
+                (y - tracer.getRenderHeight() / 2.0) / tracer.getRenderHeight()));
+        if(i != null) {
+            return i.getShape();
+        } else {
+            return null;
         }
     }
 
@@ -313,5 +249,41 @@ public class Render implements EventExecuter {
 
     public Settings getSettings() {
         return settings;
+    }
+
+    private class FixRotator {
+        double angleZ;
+        double angleY;
+        double distance;
+        FixRotator() {
+            angleZ = 0;
+            angleY = 0;
+            distance = 1;
+        }
+
+        void apply() {
+            if(selectedShape == null) {
+                return;
+            }
+            Vector3d pos = new Vector3d(-distance,0,0);
+
+            pos = Matrix3x3.createRotationMatrix('y', angleY).transformed(pos);
+            pos = Matrix3x3.createRotationMatrix('z', angleZ).transformed(pos);
+
+            Render.this.tracer.getCamera().setRotation(new Vector3d(0, (angleY > Math.PI) ? angleY-Math.PI : (angleY < -Math.PI ? angleY + Math.PI: angleY), angleZ));
+            Render.this.tracer.getCamera().setPosition(selectedShape.getPosition().add(pos));
+        }
+
+        void addZ(double angle) {
+            this.angleZ += angle;
+        }
+
+        void addY(double angle) {
+            this.angleY += angle;
+        }
+
+        void factorDistance(double f) {
+            distance *= f;
+        }
     }
 }
