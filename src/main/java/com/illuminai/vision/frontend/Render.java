@@ -5,7 +5,7 @@ import com.illuminai.vision.backend.render.Intersection;
 import com.illuminai.vision.backend.render.Ray;
 import com.illuminai.vision.backend.render.Raytracer;
 import com.illuminai.vision.backend.scene.Scene;
-import com.illuminai.vision.backend.scene.shape.Shape;
+import com.illuminai.vision.backend.shape.Shape;
 import com.illuminai.vision.frontend.listener.EventExecuter;
 import com.illuminai.vision.frontend.listener.GameListener;
 
@@ -61,7 +61,7 @@ public class Render implements EventExecuter {
             lastFrame = System.currentTimeMillis();
 
             for (int i = 0; i < averager.getAmount(); i++) {
-                averager.getScreens()[i] = tracer.renderScene(i == averager.getAmount() - 1 ? 0 : Math.random());
+                averager.getScreens()[i] = tracer.renderScene();
             }
 
 

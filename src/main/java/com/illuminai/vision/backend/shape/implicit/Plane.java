@@ -1,16 +1,16 @@
-package com.illuminai.vision.backend.scene.shape;
+package com.illuminai.vision.backend.shape.implicit;
 
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.render.Intersection;
 import com.illuminai.vision.backend.render.Ray;
-import com.illuminai.vision.backend.scene.material.Material;
+import com.illuminai.vision.backend.shape.Shape;
 
 public class Plane extends Shape {
 
     private Vector3d normal;
 
-    public Plane(Vector3d position, Material material, Vector3d normal) {
-        super(position, material);
+    public Plane(Vector3d position, Vector3d normal) {
+        super(position);
         this.normal = normal.normalize();
     }
 
@@ -27,8 +27,4 @@ public class Plane extends Shape {
         return null;
     }
 
-    @Override
-    public boolean contains(Vector3d point) {
-        return false;
-    }
 }

@@ -1,4 +1,4 @@
-package com.illuminai.vision.backend.sdf;
+package com.illuminai.vision.backend.shape.sdf;
 
 import com.illuminai.vision.backend.math.Vector3d;
 

@@ -50,10 +50,16 @@ public class Color {
     }
 
     public Color multiply(double scalar) {
-        //clamp instead of min
         double r = red * scalar;
         double g = green * scalar;
         double b = blue * scalar;
+        return new Color(r, g, b);
+    }
+
+    public Color multiply(Color color) {
+        double r = red * color.getRed();
+        double g = green * color.getGreen();
+        double b = blue * color.getBlue();
         return new Color(r, g, b);
     }
 
@@ -61,10 +67,14 @@ public class Color {
      * @return the color int
      */
     public int getRGB() {
-        int r = (((int) Math.round(red * 255)) << 16) & 0xff0000;
-        int g = (((int) Math.round(green * 255)) << 8) & 0x00ff00;
-        int b = ((int) Math.round(blue * 255)) & 0x0000ff;
+        int r = (((int) Math.round(clamp(red, 0.0, 1.0) * 255)) << 16) & 0xff0000;
+        int g = (((int) Math.round(clamp(green, 0.0, 1.0) * 255)) << 8) & 0x00ff00;
+        int b = ((int) Math.round(clamp(blue, 0.0, 1.0) * 255)) & 0x0000ff;
         return r | g | b;
+    }
+
+    public double clamp(double val, double min, double max) {
+        return Math.max(min, Math.min(max, val));
     }
 
     /**
@@ -109,4 +119,12 @@ public class Color {
         this.blue = blue;
     }
 
+    @Override
+    public String toString() {
+        return "Color{" +
+                "red=" + red +
+                ", green=" + green +
+                ", blue=" + blue +
+                '}';
+    }
 }

@@ -18,6 +18,11 @@ public class DistantLight extends Light {
     }
 
     @Override
+    public Vector3d getPosition() {
+        return new Vector3d(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+    }
+
+    @Override
     public Vector3d getDirection(Vector3d point) {
         return direction;
     }

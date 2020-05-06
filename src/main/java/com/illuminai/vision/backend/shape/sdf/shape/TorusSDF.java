@@ -1,7 +1,7 @@
-package com.illuminai.vision.backend.sdf.shape;
+package com.illuminai.vision.backend.shape.sdf.shape;
 
 import com.illuminai.vision.backend.math.Vector3d;
-import com.illuminai.vision.backend.sdf.SignedDistanceField;
+import com.illuminai.vision.backend.shape.sdf.SignedDistanceField;
 
 public class TorusSDF extends SignedDistanceField {
 

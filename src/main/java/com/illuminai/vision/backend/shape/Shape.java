@@ -1,9 +1,8 @@
-package com.illuminai.vision.backend.scene.shape;
+package com.illuminai.vision.backend.shape;
 
 import com.illuminai.vision.backend.math.Vector3d;
 import com.illuminai.vision.backend.render.Intersection;
 import com.illuminai.vision.backend.render.Ray;
-import com.illuminai.vision.backend.scene.material.Material;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -16,11 +15,6 @@ public abstract class Shape {
     private long id;
 
     /**
-     * the color
-     */
-    protected Material material;
-
-    /**
      * the position
      */
     protected Vector3d position;
@@ -29,11 +23,9 @@ public abstract class Shape {
      * Constructs and initializes a Shape from the specified position and color.
      *
      * @param position the position
-     * @param material the material
      */
-    public Shape(Vector3d position, Material material) {
+    public Shape(Vector3d position) {
         this.position = position;
-        this.material = material;
         this.id = counter.addAndGet(1);
     }
 
@@ -44,14 +36,6 @@ public abstract class Shape {
      * @return the intersection
      */
     public abstract Intersection getIntersection(Ray ray);
-
-    /**
-     * Returns true if the shape contains the point
-     *
-     * @param point the point
-     * @return true if the shape contains the point
-     */
-    public abstract boolean contains(Vector3d point);
 
     /**
      * @param position the position
@@ -65,13 +49,6 @@ public abstract class Shape {
      */
     public Vector3d getPosition() {
         return position;
-    }
-
-    /**
-     * @return the color
-     */
-    public Material getMaterial() {
-        return material;
     }
 
     public long getId() {

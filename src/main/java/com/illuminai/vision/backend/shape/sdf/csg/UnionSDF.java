@@ -1,7 +1,7 @@
-package com.illuminai.vision.backend.sdf.alteration;
+package com.illuminai.vision.backend.shape.sdf.csg;
 
 import com.illuminai.vision.backend.math.Vector3d;
-import com.illuminai.vision.backend.sdf.SignedDistanceField;
+import com.illuminai.vision.backend.shape.sdf.SignedDistanceField;
 
 public class UnionSDF extends SignedDistanceField {
 

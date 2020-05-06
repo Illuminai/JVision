@@ -1,7 +1,7 @@
 package com.illuminai.vision.backend.render;
 
 import com.illuminai.vision.backend.math.Vector3d;
-import com.illuminai.vision.backend.scene.shape.Shape;
+import com.illuminai.vision.backend.shape.Shape;
 
 /**
  * An intersection

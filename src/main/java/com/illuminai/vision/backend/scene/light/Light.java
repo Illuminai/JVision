@@ -17,6 +17,8 @@ public abstract class Light {
 
     public abstract Color getLightIntensity(Vector3d point);
 
+    public abstract Vector3d getPosition();
+
     public Color getColor() {
         return color;
     }

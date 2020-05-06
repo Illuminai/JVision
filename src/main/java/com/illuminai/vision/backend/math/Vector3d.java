@@ -108,6 +108,25 @@ public class Vector3d {
         return scale(1 / length());
     }
 
+    public Vector3d abs() {
+        return new Vector3d(Math.abs(x), Math.abs(y), Math.abs(z));
+    }
+
+    public Vector3d round() {
+        return new Vector3d(Math.round(x), Math.round(y), Math.round(z));
+    }
+
+    public double get(int i) {
+        if (i == 0) {
+            return x;
+        } else if (i == 1) {
+            return y;
+        } else if (i == 2) {
+            return z;
+        }
+        throw new IndexOutOfBoundsException();
+    }
+
     /**
      * @return the x coordinate
      */

@@ -1,11 +1,9 @@
-package com.illuminai.vision.backend.scene.shape;
+package com.illuminai.vision.backend.shape.implicit;
 
 import com.illuminai.vision.backend.math.Vector3d;
-import com.illuminai.vision.backend.render.Color;
 import com.illuminai.vision.backend.render.Intersection;
 import com.illuminai.vision.backend.render.Ray;
-import com.illuminai.vision.backend.scene.material.DiffuseMaterial;
-import com.illuminai.vision.backend.scene.material.Material;
+import com.illuminai.vision.backend.shape.Shape;
 
 /**
  * A sphere
@@ -23,7 +21,7 @@ public class Sphere extends Shape {
      * @param position the position
      */
     public Sphere(Vector3d position) {
-        this(position, 1.0, new DiffuseMaterial(0.18, new Color(0, 0, 0)));
+        this(position, 1.0);
     }
 
     /**
@@ -32,8 +30,8 @@ public class Sphere extends Shape {
      * @param position the position
      * @param radius   the radius
      */
-    public Sphere(Vector3d position, double radius, Material material) {
-        super(position, material);
+    public Sphere(Vector3d position, double radius) {
+        super(position);
         this.radius = radius;
     }
 
@@ -70,17 +68,6 @@ public class Sphere extends Shape {
             Vector3d normal = ray.getPointOnRay(time).subtract(position);
             return new Intersection(ray, this, normal, time);
         }
-    }
-
-    /**
-     * Returns true if the sphere contains the point
-     *
-     * @param point the point
-     * @return true if the sphere contains the point
-     */
-    @Override
-    public boolean contains(Vector3d point) {
-        return point.subtract(position).length() < radius;
     }
 
     /**
