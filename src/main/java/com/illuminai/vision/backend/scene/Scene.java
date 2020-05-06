@@ -68,7 +68,7 @@ public class Scene {
 
         //shapes.add(new SDFShape(new Vector3d(0, 0, 2), sdf2));
         //shapes.add(new SDFShape(new Vector3d(0, 0, 1.3), new OctahedronSDF()));
-        SignedDistanceField sdf1 = new RevolutionSDF(new Onion2dSDF(new UnevenCapsuleSDF(), .02), .7);
+        SignedDistanceField sdf1 = new RevolutionSDF(new Onion2dSDF(new UnevenCapsuleSDF(0.1,0.05,.3), .02), .7);
         SignedDistanceField sdf2 = new SphereSDF(1, new Vector3d(-.5, 0, 0));
         SignedDistanceField sdf = new SubtractionSDF(sdf2, sdf1);
 
@@ -97,5 +97,9 @@ public class Scene {
         lights.add(new DistantLight(new Color(1, 1, 1), 2, new Vector3d(0, -.2, -1)));
         //lights.add(new PointLight(new Color(1, 1, 1), 7, new Vector3d(1, 0, 1)));
         lights.add(new PointLight(new Color(1, 1, 1), 6, new Vector3d(0, 0, 1.5)));
+    }
+
+    public void prepare() {
+        shapes.forEach(Shape::prepare);
     }
 }

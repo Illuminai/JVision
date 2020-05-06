@@ -26,7 +26,10 @@ public class Raytracer {
         camera = new PinholeCamera(new Vector3d(-10, 0, 1), new Vector3d(0, 0, 0));
     }
 
-    public Screen renderScene() {
+    public Screen renderScene(int samples) {
+        scene.prepare();
+        camera.prepare();
+
         Screen screen = new Screen((int) renderWidth, (int) renderHeight);
         outliner = new long[screen.getPixels().length];
 
@@ -35,7 +38,7 @@ public class Raytracer {
             for (int y = 0; y < renderHeight; y++) {
 
                 Color sampled = new Color(0, 0, 0);
-                for (int s = 1; s <= 1; s++) {
+                for (int s = 1; s <= samples; s++) {
                     double sampleX = getSampledHalton(s, 2);
                     double sampleY = getSampledHalton(s, 3);
                     double u = (x + sampleX - renderWidth / 2) / renderWidth;

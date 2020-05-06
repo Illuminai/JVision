@@ -36,9 +36,12 @@ public abstract class Camera {
 
     public void setRotation(Vector3d rotation) {
         this.rotation = rotation;
-        rotationMatrix = Matrix3x3.createRotationMatrix(rotation);
     }
 
+    /** Adjusts the camera to the rotation*/
+    public void prepare() {
+        rotationMatrix = Matrix3x3.createRotationMatrix(rotation);
+    }
 
     // Hard coded
     public void moveForward(double amount) {

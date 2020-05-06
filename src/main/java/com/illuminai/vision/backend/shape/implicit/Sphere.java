@@ -70,6 +70,10 @@ public class Sphere extends Shape {
         }
     }
 
+    @Override
+    public void prepare() {
+    }
+
     /**
      * @return the radius
      */

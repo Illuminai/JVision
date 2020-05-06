@@ -27,4 +27,8 @@ public class Plane extends Shape {
         return null;
     }
 
+    @Override
+    public void prepare() {
+    }
+
 }

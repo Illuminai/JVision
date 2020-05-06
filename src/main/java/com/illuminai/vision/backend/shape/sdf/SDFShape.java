@@ -32,6 +32,10 @@ public class SDFShape extends Shape {
         return null;
     }
 
+    @Override
+    public void prepare() {
+    }
+
     private double getDistance(Vector3d point) {
         return sdf.getDistance(point.subtract(position));
     }
